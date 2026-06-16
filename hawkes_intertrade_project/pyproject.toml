@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hawkes-intertrade"
+version = "0.1.0"
+description = "Hawkes and intertrade duration tools for volume impact analysis"
+requires-python = ">=3.9"
+dependencies = [
+    "numpy>=1.23",
+    "pandas>=1.5",
+    "scipy>=1.9",
+    "matplotlib>=3.6",
+]
+
+[tool.setuptools]
+packages = ["hawkes_intertrade"]
