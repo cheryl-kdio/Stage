@@ -1,0 +1,2837 @@
+\documentclass[11pt,a4paper]{report} 
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc} 
+\usepackage[english]{babel} 
+\usepackage{geometry} 
+    \geometry{hmargin=2.5cm,vmargin=2.5cm}
+\usepackage{graphicx} 
+\usepackage{booktabs}
+\usepackage{enumitem}  
+\renewcommand{\labelitemi}{--} % Définit les tirets comme symboles de liste
+\usepackage{amsmath,amssymb} 
+\usepackage{hyperref} 
+\usepackage{fancyhdr} 
+    \setlength{\headheight}{27.07053pt}
+\usepackage{float} 
+\usepackage{multirow} 
+\usepackage{tikz} 
+\usepackage[backend=biber,  style=authoryear]{biblatex} 
+    \addbibresource{references.bib} 
+    \usepackage{multicol}
+\AtBeginBibliography{\scriptsize}
+\usepackage{csquotes}
+\usepackage{appendix} 
+\usepackage{longtable} 
+\usepackage{booktabs} 
+\usepackage{amsmath, amssymb}
+\usepackage{tcolorbox}
+\usepackage{comment}
+\usepackage{titlesec}
+\titleformat{\paragraph}
+{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\addbibresource{references.bib}
+\makeatletter 
+\usepackage{hyperref}
+\setcounter{tocdepth}{3} 
+\setcounter{secnumdepth}{4} 
+\hypersetup{bookmarksdepth=4} 
+\usepackage{subcaption}
+
+\begin{document}
+\captionsetup[table]{position=bottom} 
+\begin{titlepage}
+
+\thispagestyle{fancy}
+\fancyhf{} 
+\fancyhead[C]{ÉCOLE NATIONALE DE LA STATISTIQUE ET DE L'ANALYSE DE L'INFORMATION}
+
+\begin{center}
+ \Large{2024/2025}\\ 
+\vspace{2cm}
+
+\begin{minipage}{0.45\textwidth}
+    \centering
+    \includegraphics[width=9cm]{images/OIP.jpg}
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\textwidth}
+    \centering
+    \includegraphics[width=10cm]{images/Square.png}
+\end{minipage}
+
+\vspace{2cm}
+\hrule
+\vspace{0.4cm}
+\textsc{\Large End-of-studies project}\\[0.5cm] 
+{ \huge \bfseries  Climate stress test on the LGD on a mortgage portfolio}\\[0.4cm]
+\hrule
+\end{center}
+
+\vspace{2cm}
+\begin{minipage}[t]{0.5\textwidth}
+\emph{Authors :}\\
+\textbf{Mathis BOUILLON} \\ 
+\textbf{Cheryl KOUADIO}\\
+\textbf{Marilène KOUGOUM MOKO MANI}\\
+\textbf{Mariyam OUYASSIN}\\
+\textbf{Mountaga WANE} 
+
+\end{minipage}
+%
+\begin{minipage}[t]{0.5\textwidth}
+\emph{Under the supervision of :} \\
+\textbf{Charles-Emmanuel PROST}\\
+
+
+\end{minipage}
+
+\vspace*{\stretch{2}}
+
+\end{titlepage}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage    
+\tableofcontents
+\listoffigures
+\listoftables
+
+\newpage
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+This study evaluates the impact of climate-related risks on the Loss Given Default (LGD) of a residential mortgage loan portfolio, through a climate stress-testing exercise based on French data and NGFS scenario projections. A dual methodological framework is implemented, combining a Top-Down approach---linking LGD to macroeconomic deterioration under NGFS climate scenarios---and a Bottom-Up approach capturing the direct effects of physical and transition risks on collateral values.
+
+In the Top-Down analysis, climate scenarios influence a latent systemic factor---calibrated from macroeconomic indicators---which jointly drives the Probability of Default (PD) and LGD. Several PD--LGD dependency models are explored to characterize this relationship under stress. Among them, the structural Merton model is selected for its analytical consistency and better fit. Results show that delayed policy responses lead to the most significant rise in projected LGDs, while gradual transitions induce milder effects.
+
+The Bottom-Up approach complements this by assessing the direct financial impact of flood exposure and property devaluation linked to energy inefficiency. These shocks are reflected in stressed Loan-to-Value (LTV) ratios---defined as the ratio between the outstanding loan amount and the current collateral value---which are then used to estimate LGD. Results show a consistent directional response: more adverse climate scenarios are associated with higher LGD levels, though the magnitude remains moderate due to data limitations and portfolio features.
+
+Overall, this study offers a solid starting point for understanding the mechanisms and modelling approaches required to conduct climate stress tests on credit risk parameters---particularly LGD. It also underscores several empirical and methodological challenges that must be addressed to improve credit risk modelling in the context of climate change.
+
+
+
+
+
+\newpage 
+\chapter*{Glossary}
+\addcontentsline{toc}{chapter}{Glossary}
+
+\begin{enumerate}[label=\alph*)]
+    \item \textbf{Bottom-Up Approach}: A risk modelling technique that starts at the individual loan or asset level and aggregates results to obtain a portfolio-wide risk assessment.
+    \item \textbf{Climate Risk}: The potential financial losses and credit risks arising from physical climate events and transition risks in banking and finance.
+    \item \textbf{EAD (Exposure at Default)}: The total value that a bank is exposed to when a borrower defaults on a loan, representing the outstanding amount at the time of default.
+    \item \textbf{Forward Looking}: A risk assessment approach that incorporates future expectations and projected macroeconomic scenarios rather than relying solely on historical data.
+    \item \textbf{LGD (Loss Given Default)}: The proportion of a loan or credit exposure that is lost when the borrower defaults.
+    \item \textbf{NGFS (Network for Greening the Financial System)}: A global network of central banks and financial supervisors that aims to enhance the financial sector’s role in achieving sustainability and managing climate-related risks.
+    \item \textbf{PD (Probability of Default)}: The probability that a borrower or counterparty will default on its payment obligations within a given time horizon.
+    \item \textbf{Physical Risk}: The risk of direct financial losses due to extreme weather events (e.g., hurricanes, floods) or long-term environmental changes (e.g., rising sea levels).
+    \item \textbf{PIT (Point In Time)}: A credit risk measurement approach that reflects current economic conditions and a borrower’s short-term risk.
+    \item \textbf{Stress Testing}: A technique used to evaluate how a financial institution or system would perform under extreme adverse conditions, helping to assess vulnerabilities.
+    \item \textbf{Systemic Factor}: A macroeconomic or financial variable that affects credit risk parameters (such as PD, LGD) across multiple borrowers simultaneously.
+    \item \textbf{Top-Down Approach}: A risk modelling technique where macroeconomic variables drive portfolio-wide risk estimations, typically used by regulators and central banks.
+    \item \textbf{Transition Risk}: Financial risks arising from the shift to a low-carbon economy, including regulatory changes, market shifts, and reputational impacts.
+    \item \textbf{TTC (Through The Cycle)}: An approach that estimates credit risk parameters (such as PD, LGD) by smoothing out short-term fluctuations in economic conditions, making it more stable.
+\end{enumerate}
+
+\newpage
+
+
+
+
+\chapter*{Introduction}
+\addcontentsline{toc}{chapter}{Introduction}
+
+In the realm of credit risk, two principal metrics are used to assess a portfolio: the \textit{Probability of Default (PD)} and the \textit{Loss Given Default (LGD)} defined in \textcite{bis_2005}. PD is the likelihood of a borrower failing to meet their obligations (i.e., defaulting) within a specified timeframe, whereas LGD quantifies the severity of losses that lenders or investors may incur when defaults occur. To assess the capital requirements that best correspond to their exposure to adverse risks, financial institutions have developed their own internal methodologies to stress these parameters.
+
+\vspace{0.3cm}
+
+Moreover, given the increasing materialization of climate risks—through physical risks (e.g., extreme weather events) and transition risks (e.g., regulatory shifts toward a low-carbon economy)—it has become essential to integrate climate risk into credit risk modelling. Thus, understanding the relationship between credit risk metrics and climate conditions is now a cornerstone of stress testing, commonly referred to as climate stress testing, as mentioned in \textcite{ESRB_2016}. For this purpose, the European Central Bank (ECB) carried out a climate stress-testing exercise in 2021. In this exercice, two main transmission channels through which climate risks impact credit risk were identified : the Top-Down (or indirect) approach and the Bottom-Up (or direct) approach (see \textcite{alogoskoufis2021ecb}).
+
+\vspace{0.3cm}
+
+In the Top-Down approach, PDs are stressed based on the impact of climate-threatening scenarios on economic conditions, a process known as Point-in-Time (PiT) modelling. Since there are numerous data sources and methodologies available, this aspect is widely applied. However, a key limitation remains overlooked: LGD is often assumed to be constant and conservative, following the Through-The-Cycle (TTC) modelling approach. As a result, during a stress test exercise, the sensitivity of capital requirements to various scenarios is typically captured by PDs alone, without properly accounting for LGD variations. \textcite{cirillo_modeling_2018} have shown in their paper that this static assumption can lead to an underestimation of potential losses, particularly in the context of climate stress testing, where financial shocks can significantly alter recovery rates and collateral values.
+
+\vspace{0.3cm}
+
+Moreover, the Basel II Framework in \textcite{basel2005guidance} states that the LGD parameter used in Pillar 1 capital calculations must reflect economic downturn conditions where necessary to capture the relevant risks. Therefore, to model LGD accurately, it is crucial to consider its dependence on economic factors. Thus, in order to incorporate the LGD dependence on economic conditions, in the top-down approach, many authors have proposed modelling the PD-LGD dependency structure. This approach acknowledges that economic downturns simultaneously increase default rates and reduce recoveries (wrong-way risk), leading to a reinforcing effect on credit losses. By incorporating this dependency into climate stress testing, we can better capture the full extent of credit risk exposure under different climate scenarios.
+
+\vspace{0.4cm}
+
+In the Bottom-Up approach, the focus is on examining the direct impact of climate-related factors on asset values and collateral quality. This method involves estimating how physical and transition risks affect specific industries, borrowers, and collateralized assets. Since these risks can alter the liquidation value of assets, they ultimately influence PD and LGD calculations.
+
+\vspace{0.3cm}
+
+
+In this report, we aim to conduct a climate stress test specifically on the LGD parameter, assessing how climate-driven economic shocks and asset devaluations influence loss severities in a portfolio of residential mortgage loans in France. To achieve this goal, we will use a dataset of defaulted mortgage loans, along with historical macroeconomic data for France and projections up to 2050 under different NGFS climate scenarios.
+
+
+\chapter{Literature Review}
+
+\section{Climate risks}
+
+Climate change is one of the most pressing challenges the world faces in this century, and governments worldwide have committed to addressing it in various ways. The Paris \textcite{agreement2015united} marked a significant milestone in this regard, as it aims to foster a global response to climate change by keeping the global temperature rise this century well below 2°C above pre-industrial levels and pursuing efforts to limit the temperature increase even further to 1.5°C.\\
+
+This issue has filled the financial world, as it represents not only an economic risk but also a regulatory and reputational one. Indeed, many European action plans and national legislations (e.g., taxonomy, disclosure requirements, etc.) have been developed for sustainable finance. This has led to a so-called “regulatory avalanche”, with which banks must comply. 
+
+Climate change gives rise to two main categories of climate-related risk: \textit{physical risk} and \textit{transition risk} (see \textcite{semieniuk2021low} and \textcite{alogoskoufis2021ecb})
+Transition risk refers to the negative impact that climate policies designed to reduce $CO_2$ emissions could have on high-emitting firms. For instance, industries heavily reliant on non-renewable or highly polluting resources—such as mining or fossil fuel extraction—could experience a sharp decline in profits and rising production costs. Hence, failing to meet expectations in terms of pollution poses a significant global reputational risk to both the bank and its business.
+Another key driver of climate-related risk is physical risk, which stems from the increasing frequency and severity of natural disasters due to climate change. For example, production facilities located in high-risk areas—such as coastal regions prone to flooding—are particularly vulnerable. In the event of extreme climate events, these facilities could sustain substantial damage, leading to short-term production disruptions and, in the long run, potential business failures.\\
+
+These two categories of climate risk constitute an emerging source of systemic risk, with the potential to disrupt financial institutions ability to provide services and threaten the stability of financial markets, ultimately impacting the real economy. First, transition risk could undermine the creditworthiness of banks’ counterparties and lead to declines in asset prices, potentially endangering bank solvency. Moreover, physical risk could lead to sudden financial losses in climate-sensitive geographical areas, eroding collateral values and reducing the worth of assets held by financial institutions.
+
+
+\section{Integrating climate risk into LGD modelling}
+
+% In recent years, central banks and regulatory institutions have begun developing stress-testing methodologies and scenario analyses to assess the impact of climate risks on the financial system and the broader economy. While significant progress has been made, most of these frameworks still lack certain critical components needed for a comprehensive evaluation of climate risks on financial stability and economic resilience.\\
+
+In 2021, the ECB developed an economy-wide climate stress test to assess the resilience of non-financial corporations and euro area banks to climate risks under various assumptions regarding future climate policies. This paper serves as a key reference in term of climate stress-testing, as the ECB plays a central role in the banking sector. Moreover, this study centralised many others studies on the subject (see ACPR and Banque de France (2020); ACPR and Banque de France (2021); Banque de France (2020); EBA (2021))
+It highlights that climatic factors can induce financial and banking risks through several transmission channels, which can be grouped into two main categories: direct and indirect transmission channels of climate risk drivers. These channels are commonly referred to as the bottom-up and top-down approaches, respectively.\\
+
+To integrate climate risk into LGD modelling, a common approach is to stress-test the PD parameter through a systemic factor Z, assuming it is linked to macroeconomic factors. The impact of this stressed systemic factor on LGD is then observed using some of the PD-LGD dependence models discussed in the previous section. This method is known as the Top-Down approach.
+For the modelling of the relationship between macroeconomic conditions (captured through the systemic factor 
+Z) and Point-in-Time (PIT) PDs, the \textit{Asymptotic Single Risk Factor (ASRF)} model of \textcite{vasicek2002distribution} serves as the reference framework . These stressed PIT PDs are then linked to LGD through the different PD-LGD dependence specifications proposed in the section \ref{pd-lgd-literature}.
+
+A phase of translating climate scenarios into economic consequences is then necessary, in order to stress PD and LGD. In the literature, models such as the Integrated Assessment Model (IAMs) and the National Institute Global Econometric Model (NiGEM), from the Network of Central Banks and Supervisors for Greening the Financial system (NGFS), are used for this purpose (see \textcite{alogoskoufis2021ecb}, \textcite{aboh2023developpement},...). The input variables of these models concern forecasts of climate shocks (future trajectory of global temperature, CO2 emissions, carbon price, etc.). \\
+
+Another approach is the Bottom-Up approach, where the impact of climate risk on LGD is modelled directly. Although there are not many studies on this approach, a few models have been developed.
+To assess the impact of physical risk - particularly flooding- on LGD, the most used model is the LISFLOOD hydrodynamic model of \textcite{dottori2016development}. This model generates water height maps associated with river floods of varying intensities, characterized by return periods, across all European countries.
+These maps provide essential inputs for calculating expected damages to properties, which in turn affect the Loan-to-Value (LTV) ratio—a key driver of LGD. Moreover, the Expected Annual Damage methodology of \textcite{huizinga2017global}, recommended by the ECB, is employed to quantify flood impacts on asset values by integrating probability-weighted damage functions. 
+
+In addition to physical risks, transition risks also significantly affect asset values and, consequently, the LGD. To assess the impact of transition risk on LGD, it is common to model the expected devaluation of properties with poor energy performance certificates (EPCs - Energy Performance Certificates /GHG - GreenHouse Gas labels) through updated Loan-to-Value (LTV) ratios. Several studies, including \textcite{roncalli2022handbook}, have demonstrated how integrating energy performance ratings into real estate pricing models helps capture the expected depreciation under transition scenarios.
+Moreover, to estimate the expected devaluation of energy-inefficient properties, \textcite{ter2021german} proposed a model, based on the assumption that less energy-efficient properties will, all other things being equal, be sold at lower prices than more energy-efficient homes. 
+
+
+\section{Dependence between PD and LGD : towards a joint modelling approach}\label{pd-lgd-literature}
+
+In the modelling of Loss Given Default (LGD), the integration of economic conditions in the calculation of the LGD Point in Time, via the Forward Looking concept, is sometimes neglected. This represents a major challenge in credit risk assessment due to the complexity of its dynamics and its interdependence with several economic factors. One of the main difficulties lies in the fact that LGD is not a constant but varies with the probability of default (PD) and, hence, economic conditions, as mentioned in \textcite{altman2005link}. Quantifying this relationship becomes even more complex due to the limited availability of LGD data, making the development of robust and accurate models particularly difficult. This uncertainty, combined with the lack of complete data and the variability of factors influencing losses, complicates the modelling process significantly.
+Hence, to obtain a stressed LGD, a common approach is to stress test PD and then observe its impact on LGD through their dependency relationship. Below, we review different methods for modelling this relationship.\\
+
+% \textcolor{orange}{Charles Emmanuel : La LGD workout n'est pas une méthode d'estimation de la LGD, c'est une méthode de calcul, i.e. la manière dont la variable cible y=LGD est construite. Parler de la LGD workout dans cette section semble donc peu approprié.}
+% \textbf{Commentaire : Le passage sur LGD Workout a été supprimé car il ne correspond pas à une méthode de modélisation mais seulement à un mode de calcul.}
+
+Various approaches have been proposed in the literature to model the PD-LGD relationship. Works such as those of \textcite{frye2013credit}, \textcite{pykhtin2003recovery}, and \textcite{cirillo_modeling_2018} have demonstrated that this systemic dependence significantly impacts the overall risk estimation of a portfolio. Frye proposes a linear modelling of LGD dependent on a latent systematic factor, though this factor is rarely observable in practice. Pykhtin extends this approach by introducing models that require an in-depth knowledge of the systematic factor $ Y $, which, while theoretically relevant, poses challenges due to its latent nature.\\
+
+A more flexible solution is proposed by \textcite{giese2005impact}, who introduces a nonlinear model incorporating a more adaptable link function between LGD and PD. This model accounts for economic dynamics but assumes a comonotone relationship \footnote{A comonotone relationship refers to a relationship between two variables where they always move in the same direction, reflecting maximum dependence driven by a common factor.}, which may lead to an overestimation of large quantiles in the loss distribution, especially during crises. Moreover, the proposed link function lacks theoretical justification from both an economic and a statistical perspective, which may limit its applicability in real-world scenarios.\\
+
+To better capture the relationship between PD and LGD, \textcite{cirillo_modeling_2018} propose a bivariate non-central Beta distribution, which models their joint structure and enhances regulatory capital estimates. The dependence is modelled using a common factor $W$, enabling simultaneous stress testing of both parameters. However, accurate calibration remains a significant challenge, requiring representative historical data across different economic cycles.\\
+
+\textcite{hillebrand2006modeling} take a different approach by incorporating stochastic dependence rather than deterministic functional relationships. He argues that expected LGD and PD, conditioned on economic cycles, are not necessarily comonotone but exhibit stochastic dependency, making the model more realistic under varying market conditions.\\
+
+Within a structural modelling framework, \textcite{tasche2004single} assumes that LGD depends on the logarithmic return of an asset falling below the debt value. Similarly, the Merton-based model proposed by \textcite{seidler2009implied} links LGD to asset volatility, leveraging credit risk theory to estimate recoveries. However, these approaches require precise asset volatility estimation, which can be complex and highly sensitive to market fluctuations.
+
+Building on the idea of linking credit risk components, \textcite{frye2013credit} propose a model where PD and LGD evolve in tandem with economic fluctuations. Their approach assumes that the default rate (DR) and the loss rate (LR) are perfectly linked, following a Vasicek distribution, with a single correlation parameter governing their dependency. While computationally efficient, this model's reliance on a fixed correlation structure may limit its flexibility.
+
+A similar correlation-based perspective is adopted in the Vasicek model introduced by \textcite{li1999default} employs a Gaussian copula approach to link PD and LGD via a shared systemic factor representing macroeconomic conditions. This model is particularly relevant for regulatory stress testing as it effectively captures macroeconomic dependencies. However, its implementation requires extensive data calibration and is computationally demanding.
+In the end, each model presents distinct advantages and challenges. The Frye-Jacobs model is easy to implement but assumes a rigid correlation structure. The Merton-based model is dynamic but relies heavily on market data. The Vasicek model effectively captures macroeconomic dependencies but requires complex calibration.\\
+
+Based on this literature review, we have selected the Hillebrand, Frye-Jacobs, and structural Merton-based models to capture PD-LGD dependency and, consequently, implement the Top-Down approach. This choice is founded on the applicability of these models and their distinct theoretical foundations. Specifically, Hillebrand offers a statistical perspective, whereas the Merton-based model adopts a structural approach, while Frye-Jacobs provides an economic cycle-based framework. Together, these models offer a comprehensive view of PD-LGD dependencies, ensuring robustness in stress testing and risk quantification.
+For the Bottom-Up approach, where established methodologies are limited, we will test all the models identified in this review.
+
+\chapter{Data}
+
+
+
+% This study relies on a comprehensive dataset that captures key aspects of mortgage default risk in France. It integrates information on residential mortgage loans that defaulted between 2010 and 2016, enriched with macroeconomic indicators, climate scenario projections, and detailed property characteristics, including energy efficiency ratings. These diverse data sources enable a thorough analysis of the impact of transition risk on mortgage Loss Given Default (LGD). 
+
+% This section provides an overview of the dataset, structured into four key components:
+
+% \begin{enumerate}
+%     \item Description of the portfolio 
+%     \item Macroeconomic Variables  
+%     \item NGFS Climate Scenarios 
+%     \item Descriptive Statistics 
+% \end{enumerate}
+
+% By incorporating borrower characteristics, loan terms, and economic conditions, this dataset provides a robust foundation for assessing the implications of climate transition risk on mortgage portfolios.
+\section{Description of the portfolio}
+
+The portfolio used to assess the integration of climate risk into LGD estimation consists of mortgage loans granted to individuals and professionals who defaulted between 2010 and 2019. The dataset combines three key sources:
+
+\begin{itemize}
+    \item Mortgage loan database: Contains detailed data on defaulting borrowers (creditworthiness, financial history, property address, LGD) as well as information on the financed real estate. Note that the property address and its corresponding latitude and longitude do not necessarily reflect the building’s exact location but rather the nearest address with similar characteristics, as determined by the geocoder developed by Square Management's teams.
+    
+    \item National Building Database (BDNB): Aggregates several Open Data sources (BD TOPO, DLE, ETALAB) and provides comprehensive information on the characteristics of real estate properties in France.
+    
+    \item Property Transaction Database (DVF): A French public database that records real estate transactions registered by notaries and tax services.
+\end{itemize}
+
+These additional databases (BDNB and DVF) enrich the banking data by supplying complementary information on the properties subject to mortgage loans. A complete list of variables is provided in table~\ref{tab:data_variables} in the appendix.
+
+\subsection{Loan and borrower characteristics}
+
+The dataset includes detailed financial and risk-related attributes for each borrower and mortgage contract, such as the loan amount, the risk score of the individuals at the time of the loans, the loss given default (LGD), the exposure at default (EAD) etc. Thus, these informations are important for developing a Basel-compliant LGD model that relies on Exposure at Default (EAD) and recovery values. 
+
+The portfolio consists of two types of clients: individual and professional clients, both covered by mortgage and external guarantee guarantees, each with distinct risk characteristics. In fact, the overall portfolio has a realised LGD of 20.30\%, associated with a risk score of 18.99\%. Therefore, the probability that the portfolio will default is not high, and the loss incurred in the event of default amounts to only 20\% of an exposed amount of approximately 115 092 euros. However, this loss is not homogeneous across client types. Professional clients tend to have a lower probability of default (7.81\%) but a higher exposure amount, whereas individuals exhibit the opposite trend, with a default probability of 19.06\% but a lower EAD. Regarding guarantee types, loans secured by mortgage guarantees have the highest risk exposure.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{c|ccc|c}
+    \toprule
+     & Realized LGD & Risk score & EAD (in euro)& Frequency  \\
+    \midrule
+    \multicolumn{5}{c}{Type of client} \\ \hline
+    Individuals & 0.2033 & 0.1906 & 114 781.9923 & 6122\\
+    Professionnal & 0.1473 & 0.0781 & 166 544.3770 & 37\\ \hline
+     \multicolumn{5}{c}{Type of guarantee} \\  \hline
+    External caution & 0.1117 & 0.1568 & 120 171.7550 & 2877\\
+    Mortgage caution & 0.2831 & 0.2190 & 110 640.8774 & 3282\\ \hline\hline
+    Overall & 0.2030 & 0.1899 & 115 092.9532 & 6159 \\
+    \bottomrule
+    \end{tabular}
+    \caption{Resume statistics}
+    \label{tab:my_label}
+\end{table}
+
+
+%Table~\ref{tab:loan_char} below summarizes the key variables related to loan terms and borrower profiles.
+
+% \begin{table}[H]
+%     \centering
+%     \caption{Summary of Loan and Borrower Characteristics}
+%     \vspace{0.3cm}
+%     \label{tab:loan_char}
+%     \begin{tabular}{|l|c|}
+%         \hline
+%         \textbf{Variable} & \textbf{Description} \\
+%         \hline
+%         Borrower Type & Individual or Professional \\
+%         Income & Monthly income of the borrower \\
+%         Savings & Total savings at loan origination \\
+%         Credit Risk Score & Initial risk score and risk at default \\
+%         Default Date & Date when default occurred \\
+%         Loan Amount & Initial loan amount granted \\
+%         Loan Duration & Initial loan term (years) \\
+%         Interest Rate & Applied mortgage rate \\
+%         Debt-to-Income Ratio & Borrower's debt servicing capacity \\
+%         \hline
+%     \end{tabular}
+% \end{table}
+
+%\noindent\textbf{Commentary:} 
+% This table provides a concise summary of the essential characteristics used to profile borrowers and their mortgage contracts. These variables serve as the building blocks for the subsequent LGD modelling, as they capture both financial capacity and risk levels.
+
+To compute the realized LGD (commonly referred to as LGD workout) for a contract $j$ that has defaulted during a specific period, and for which the recovery process has been completed, we apply the following formula:
+\begin{align*}
+     LGD_j &= 1 - \frac{\mbox{Present Value of the contract recovery cash flows for contract } j}{EAD_j} \\
+     &= 1 - \frac{\sum_{t=\tau_j}^T \mbox{Discounted Recoveries}_{jt}}{EAD_{j,\tau_j}} \\
+     &= 1 - TR_j(T_j),
+\end{align*}
+\hspace{0.65cm}  
+where $TR_j(T_j)$ denotes the final recovery rate of contract $j$. Recoveries are observed from the default date $\tau_j$ until the resolution of the default $T_j$.
+
+In our dataset, some LGD values exceed 1 (indicating that the recovery process incurred higher costs than the exposure). For consistency in our analyses, we clip LGD values at 1.
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.8\linewidth]{images/LGD_cap.png}
+%     \caption{Capping LGD values at 1}
+%     \label{fig:lgd_cap}
+% \end{figure}
+Additionally, we restrict the dataset to defaults occurring between 2010 and the third quarter of 2016. This is due to a significant regulatory reform (the \textit{garantie crédit logement} reform) in the last quarter of 2016, which introduced major changes in loan guarantee conditions and recovery mechanisms. Including data beyond this point could introduce bias in LGD estimation and recovery rate calibration.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{images/LGD_PIT.png}
+    \caption{Quarterly Mean of LGD}
+    \label{fig:lgd_pit}
+\end{figure}
+
+% \begin{table}[H]
+%     \centering
+%     \caption{Descriptive Statistics of LGD Realized}
+%     \label{tab:lgd_statistics}
+%     \begin{tabular}{lc}
+%         \hline
+%         \textbf{Statistic} & \textbf{Value} \\
+%         \hline
+%         Mean & 0.5528 \\
+%         Standard Deviation & 1.9718 \\
+%         Minimum & 0. \\
+%         25th Percentile & 0.0248 \\
+%         Median (50th Percentile) & 0.0693 \\
+%         75th Percentile & 0.2051 \\
+%         Maximum & 13.3700 \\
+%         \hline
+%     \end{tabular}
+% \end{table}
+
+% The above table summarizes the distribution of the realized LGD values. Notice the high variability indicated by the standard deviation and the presence of extreme values (with a maximum of 13.37). These insights justify our decision to cap LGD at 1 for further analysis, ensuring a more robust model calibration.
+
+\subsection{Property characteristics and energy labels}
+
+The dataset includes information on the underlying real estate assets, particularly their energy efficiency.
+EPCs and GHG labels are used in real estate diagnostics to inform about a property's energy performance and environmental impact.
+EPCs measures a dwelling's or building's energy consumption in kilowatt-hours per square meter per year(kWh/m\textsuperscript{2}/year).
+Housing is classified on a scale from A (very efficient) to G (very energy-intensive). 
+
+The GHG label, on the other hand, measures $\mbox{CO}_2$ (carbon dioxide) emissions generated by the real estate property, expressed in kg of $\mbox{CO}_2$/m\textsuperscript{2}/year \footnote{In practice, each energy source used in the dwelling is converted into kg of $\mbox{CO}_2$/m\textsuperscript{2}/year using an emission factor specific to each energy type. 
+For example, in France, electricity has a low emission thanks to nuclear power ($\approx 0.09$ kg $\mbox{CO}_2$/kWh), while natural gas emits around $0.234$ kg $\mbox{CO}_2$/kWh, and domestic fuel oil $\approx 0.324$ kg $\mbox{CO}_2$/kWh.}.
+EPCs and GHG labels thus provide complementary insights. Generally, a high EPCs label also implies a high GHG label, but some exceptions exist.
+For instance, consider a well-insulated dwelling heated with natural gas. It will receive a good EPCs rating due to its efficient insulation and optimized energy use. However, it will have a poor GHG label since natural gas is a fossil fuel that produces a significant amount of $\mbox{CO}_2$ upon combustion. Our portfolio consists primarily of mortgages with Greenhouse Gas (GHG) emissions labels of B and Energy Performance Certificate (EPC) labels of D (see table \ref{tab:epc_ghg_label}).
+
+Notably, in the initial mortgage credit database, a significant majority (84\%) of EPC and GHG labels were missing. These were imputed using an internally developed methodology by Square Management. 
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{l|rrrrrrr|r}
+    \toprule
+     \multirow{2}{*}{GHG} &  \multicolumn{7}{c}{EPCs} \\
+     \cmidrule{2-8}
+     & A & B & C & D & E & F & G & Total \\
+    \midrule
+    A & 148 & 210 & 686 & 87 & 1 & 1 & 0 & 1133 \\
+    B & 0 & 30 & 22 & 811 & 622 & 26 & 0 & 1511 \\
+    C & 0 & 0 & 720 & 88 & 42 & 264 & 202 & 1316 \\
+    D & 0 & 0 & 0 & 872 & 110 & 13 & 8 & 1003 \\
+    E & 0 & 0 & 0 & 0 & 654 & 51 & 11 & 716 \\
+    F & 0 & 0 & 0 & 0 & 0 & 313 & 43 & 356 \\
+    G & 0 & 0 & 0 & 0 & 0 & 0 & 124 & 124 \\
+    Total & 148 & 240 & 1428 & 1858 & 1429 & 668 & 388 & 6159 \\
+    \bottomrule
+    \end{tabular}
+    \caption{GHG and EPCs labels frequency}
+    \label{tab:epc_ghg_label}
+\end{table}
+
+
+% The indicator variable \textbf{Completion\_etiquette} takes the value 1 when the reported EPCs and GHG labels were imputed.
+
+% The dataset includes information on the underlying real estate assets, particularly their energy efficiency. Since \textbf{84\% of EPCs and GHG labels were initially missing}, an internal imputation method was applied.
+
+
+% \begin{table}[H]
+%     \centering
+%     \caption{Summary of Property Characteristics}
+%     \vspace{0.3cm}
+%     \label{tab:property_char}
+%     \begin{tabular}{|l|c|}
+%         \hline
+%         \textbf{Variable} & \textbf{Description} \\
+%         \hline
+%         Property Type & House or Apartment \\
+%         Acquisition Price & Purchase price at origination \\
+%         Year of Construction & Year the property was built \\
+%         Surface Area & Estimated property size (m²) \\
+%         Energy Efficiency Label (DPE) & Rating from A (best) to G (worst) \\
+%         CO$_2$ Emission Label (GES) & Measures kgCO$_2$/m²/year \\
+%         Geographical Location & Anonymized latitude/longitude \\
+%         \hline
+%     \end{tabular}
+% \end{table}
+
+
+
+
+% \subsection{Descriptive Statistics}
+
+% \textcolor{red}{Je pense qu'il serait judicieux d'inclure les stats descriptives directement après avoir présenté les données et ne pas en faire une partie}
+
+% To provide an overview of the dataset, Table \ref{tab:desc_stats} presents descriptive statistics for key financial and property-related variables.
+
+% \begin{table}[H]
+%     \centering
+%     \caption{Descriptive Statistics of Key Variables}
+%     \vspace{0.3cm}
+%     \label{tab:desc_stats}
+%     \begin{tabular}{|l|c|c|c|c|}
+%         \hline
+%         \textbf{Variable} & \textbf{Mean} & \textbf{Median} & \textbf{Min} & \textbf{Max} \\
+%         \hline
+%         Loan Amount (€) & 192,000 & 180,000 & 50,000 & 950,000 \\
+%         Interest Rate (\%) & 2.1 & 2.0 & 0.8 & 4.5 \\
+%         Borrower Income (€) & 38,500 & 35,000 & 12,000 & 150,000 \\
+%         Property Value (€) & 250,000 & 230,000 & 75,000 & 1,200,000 \\
+%         Surface Area (m²) & 85.4 & 80.0 & 25.0 & 250.0 \\
+%         LTV Ratio (\%) & 76.5 & 78.0 & 40.0 & 98.5 \\
+%         \hline
+%     \end{tabular}
+% \end{table}
+
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.5\linewidth]{images//data/LGD_garantie.png}
+%     \caption{Enter Caption}
+%     \label{fig:enter-label}
+% \end{figure}
+
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.5\linewidth]{images//data/LGD_plafonnée.png}
+%     \caption{Enter Caption}
+%     \label{fig:enter-label}
+% \end{figure}
+
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.5\linewidth]{images//data/moyLGD.png}
+%     \caption{Enter Caption}
+%     \label{fig:enter-label}
+% \end{figure}
+
+\section{NGFS Climate Scenarios}
+
+The Network of Central Banks and Supervisors for Greening the Financial System ( Network for Greening the Financial System-NGFS) has developed future climate scenarios on the basis of historical trends, but also on the potential amplitude risks that could arise in the future. At the current version of these scenarios is shown in figure \ref{fig:ngfs_cart} :
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/ngfs_scenario.png}
+    \caption{Cartography of NGFS Scenario (\href{https://www.ngfs.net/en/publications-and-statistics/publications/ngfs-climate-scenarios-central-banks-and-supervisors-0}{Source : NGFS phase V, 2024})}
+    \label{fig:ngfs_cart}
+\end{figure}
+
+According to NGFS, the definition of climate scenarios aims to provide a common reference framework to understand the future evolution of climate change risks, both physical risks and transition risks arising from energy transition policies and technologies. These scenarios are designed by highlighting either their pessimistic (high-risk) or optimistic (low-risk) nature through an analysis of physical and transition risks. They are described as follows:
+
+\begin{itemize}
+    \item \textbf{Ordered Scenarios} : These scenarios assume that climate policies are implemented very early and gradually become stricter. As a result, the physical and transition risks incurred are lower. By introducing climate policies quickly enough to reduce $CO_2$ emissions and lower global temperatures, these scenarios translate into moderate physical and transition risks. They are divided into three alternative scenarios : \textit{Net Zero 2050}, \textit{Below 2°C}, and \textit{Low Demand}.
+    
+    The \textit{Net Zero 2050} scenario aims to limit global warming to 1.5°C by implementing strict climate policies immediately to achieve net zero $CO_2$ emissions by 2050. Meanwhile, the \textit{Below 2°C} scenario considers that the previous scenario is somewhat too ambitious, as studies estimate a 67\% probability of limiting the global average temperature increase to below 2°C. 
+
+    The \textit{Low Demand} scenario, in contrast, assumes a global economic shift driven by lower energy consumption rather than aggressive climate policies. It envisions a world where technological advancements, efficiency improvements, and behavioural changes significantly reduce energy demand, thereby curbing greenhouse gas emissions with minimal reliance on carbon pricing or restrictive policies. This scenario implies fewer transition risks due to reduced regulatory pressure but still mitigates physical risks through lower emissions.
+
+    \item\textbf{Disorderly Scenarios} : The key feature of disorderly scenarios is the delay in climate transition. While ultimately aiming to achieve the same objectives as the ordered scenarios, this delay leads to higher transition risks. Even though physical risks remain low, the transition delay results in additional economic costs.
+
+    This scenario, called \textit{Delayed Transition}, assumes that global annual emissions do not decrease before 2030. As a result, strong political incentives are required to successfully limit warming to less than 2°C of global temperature rise.
+
+    % First, the \textit{Divergent Net Zero} scenario, by aiming to achieve net zero emissions by 2050, would generate higher costs due to the introduction of diverging policies across sectors and the rapid elimination of fossil fuels. Moreover, this scenario fundamentally differs from the \textit{Net Zero 2050} scenario because it assumes that climate policies are stricter in sectors that are more energy-intensive and emit more $CO_2$.
+
+    \item \textbf{Global greenhouse scenarios}: Despite the implementation of climate policies in some countries and regions (whether current or planned), scenarios classified as \textit{Hot House World} assume that global efforts alone are insufficient to prevent significant climate warming. Consequently, the global average temperature will reach critical and alarming thresholds, leading to severe physical risks.
+    Two scenarios belong to this category: \textit{National Determined Contributions} and \textit{Current Policies}. 
+
+    The first scenario assumes that all climate policies planned by policymakers are considered, even if they have not yet been implemented. This scenario assumes that emissions decrease but still lead to a warming of 2.6°C by 2080, corresponding to progressively severe physical risks and relatively low transition risks. 
+
+    The \textit{Current Policies} scenario, which is much more pessimistic than the first, assumes that only current policies are maintained, inevitably leading to more severe physical risks. The NGFS predicts that under this scenario, $CO_2$ emissions will continue to increase until 2080, resulting in an estimated global warming of approximately 3°C.
+
+    \item \textbf{Too little, too late} : No specific scenario has been developed by NGFS experts for the "\textit{Too little, too late}" category till then. Recently, a new scenario were introduced "\textit{fragmented world}". Fragmented World assumes a delayed and divergent climate policy response among countries globally, leading to high physical and transition risks. Countries with net zero targets achieve these only partially (80\% of the target), while the other countries follow current policies.
+\end{itemize}
+
+In summary, these scenarios help various stakeholders in the banking system assess the potential impacts of climate change on the economy and the financial system. In this study, we use the climate scenarios \textit{Below 2°C}, \textit{Delayed Transition}, \textit{Net Zero 2050}, and \textit{National Determined Contributions}. Their selection is justified as they represent each category of climate trends and are widely used in the literature (see \textcite{alogoskoufis2021ecb}, \textcite{garnier2021climate}).\\
+
+For the purpose of the climate stress test on the LGD, we will use the model NGFS NiGEM and the same shocked macroeconomics variables as presented in the previous part. Thus, each NGFS scenario is simulated from 2022 to 20250 using an aggregation of three NiGEMs: GCAM 5.3, MESSAGEix-GLOBIOM, and REMIND-MAgPIE, leading to 15 different projections(3 IAMs × 5 NGFS scenarios) (see figures \ref{fig:cgam}, \ref{fig:message}, \ref{fig:remind} in the appendices).
+
+% Since NiGEM model provides only annually expressed variables, it is necessary to trimestrialise them. For this purpose, we apply the following methodolody : y revenir
+
+
+% To integrate climate risk into mortgage credit risk assessment, we use \textbf{climate-adjusted macroeconomic projections} from the \textbf{NGFS (Network for Greening the Financial System)}.
+
+% The dataset \textbf{Données\_macro\_NGFS.xlsx} contains \textbf{annual projections (2022–2050)} for different climate transition scenarios, generated using \textbf{Integrated Assessment Models (IAMs)} combined with the \textbf{NiGEM} macroeconomic model.
+
+% \begin{table}[H]
+%     \centering
+%     \caption{NGFS Scenarios and IAM Models}
+%     \vspace{0.3cm}
+%     \label{tab:ngfs_models}
+%     \begin{tabular}{|l|c|}
+%         \hline
+%         \textbf{Scenario} & \textbf{Description} \\
+%         \hline
+%         Baseline & No new climate policies beyond current ones \\
+%         Below 2°C & Immediate and strong mitigation efforts \\
+%         Delayed Transition & Late and abrupt policy adjustments \\
+%         NDCs & Policies aligned with Nationally Determined Contributions \\
+%         Net Zero 2050 & Aggressive decarbonization to net zero by 2050 \\
+%         \hline
+%     \end{tabular}
+% \end{table}
+
+
+\newpage
+
+
+
+\chapter{Integration of climate risk in the LGD using the Top-Down approach}
+
+As mentioned in the literature review, the ECB's 2021 climate stress-testing exercise identifies two transmission channels that can be grouped into two main parts to incorporate the impact of climatic factors: the top-down approach and the bottom-up approach. In this section, we focus on the top-down approach for climate stress testing. The other approach will be presented in the chapter \ref{bottom-up_chapter}.\\
+
+The Top-Down approach is based on the hypothesis that climate risk can have a structural effect on macroeconomic variables (gross domestic product, unemployment rate, inflation, etc.), causing systemic stress that can explain banks' financial losses. This approach is summarized in the following diagram :
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{images/top-down.png}
+    \caption{Overview of the top-down approach}
+    \label{fig:top-down-overview}
+\end{figure}
+
+In the following sections, we will begin by presenting the theoretical concepts of the top-down approach. This will be followed by the implementation of the approach and the presentation of the results.
+
+
+\section{Theoretical framework: concepts and models}
+\subsection{Reference model :  Asymptotic Single Risk Factor (ASRF)}
+
+To integrate climate risk into LGD modelling through the Top-Down approach, a common method is to assess the impact of the deterioration of economic conditions caused by climate change on LGD. To do so, the Asymptotic Single Risk Factor (ASRF) model of \textcite{vasicek2002distribution}, based of the firm model proposed by Merton, serves as the reference framework for modelling the relationship between macroeconomic conditions (captured through the systemic factor Z) and Point-in-Time (PIT) PDs.
+
+
+\subsubsection{Merton firm model}\label{merton-presentation}
+
+In the Merton firm model, the debt of a company $i$ at time $t$, denote $D^i_t$, has a fixed maturity period, represented by $H$. Until the maturity (or horizon) $H$, no payments are required, but at that moment, the entire debt must be repaid, i.e. $D^i_t = D^i_H = D^i$ for all $t \in [0;H]$.
+The company also possesses assets whose valuation at time $t=0$ is given by $A^i_0$, that will generate wealth that can be used to repay the debt at maturity $H$.
+The term $A^i_t$ represents the market value (discounted at time $t$) of the future cash flows generated by the company's activity. This market value depends both on the company's intrinsic competence and on the macroeconomic environment.
+
+At maturity $H$, the owner of the company can assess the value of the assets and has two options. First, if the valuation of the assets is higher than the company’s debt ($A^i_H > D^i$), they can sell the assets to repay the bank and retain the surplus $A^i_H - D^i$. However, if the asset value is lower than the debt, the best choice for the owner is to default and let the bank sell the assets to recover as much as possible. Consequently, in this model, default is defined as the event where the company’s asset value at maturity $H$ is lower than its debt, i.e. $A^i_H < D^i_H$\footnote{In fact, both the company's equity and debt can be interpreted as \textbf{derivative products} on the firm's assets (underlying). It is then possible to use the \textbf{Black-Scholes model} to determine the market value of the debt.}.
+
+This model implies several assumptions: when a company defaults, it does so on its entire debt immediately; The liabilities of the company is independent of its value.
+
+Under these assumptions, and assuming that the value of assets $A^i_t$ follows a Wiener process $b_t$ with drift $\mu_i$ and variance $\sigma_i^2$. We can, hence, define the firm’s value as :
+
+\begin{equation}
+\forall t \in [0,T], \quad dA_t^i = \mu_i A_t^i dt + \sigma_i^2 A_t^i db^i_t.
+\end{equation}
+
+Thus, using Itō’s lemma, the firm's value at the maturity of its debt can be rewritten as:
+
+\begin{equation}\label{eq1}
+    A_H^i = A_0^i e^{\sigma_i \sqrt{H} X_H^i + \left(\mu_i - \frac{1}{2} \sigma_i^2\right)H},
+\end{equation}
+where $X_H^i = \frac{{b}_H^i}{\sqrt{H}} \sim \mathcal{N}(0,1)$.
+
+To simplify the notation, we assume that the maturity corresponds to one year ($H=1$), so that $A_H^i = A^i$.
+
+Although Merton's model was initially developed to assess corporate default risk, it can also be applied to individuals taking out loans. For an individual borrower, the model's logic can be reformulated by replacing the company's asset value with the borrower’s repayment capacity. This capacity depends on income and wealth (analogous to a firm's assets) and on the level of indebtedness (analogous to liabilities).
+
+However, the formulation given by equation \ref{eq1} is insufficient, because, with these assumptions alone, the Point-in-Time (PIT) probability of default of a company is determined only by the mean growth of its value $(\mu_i)$ and the volatility of this growth $(\sigma_i^2)$. In order to introduce a term reflecting the macroeconomic environment, \textcite{vasicek2002distribution} proposed the Asymptotic Single Risk Factor (ASRF) model presented in the following section.
+
+\subsubsection{The Asymptotic Single Risk Factor (ASRF) model}
+
+The ASRF model is based on the assumption that the creditworthiness of a borrower $i$ at time $t$, denoted $X_t^i$, depends on a common systemic factor for all borrowers ($Z_t$) and an idiosyncratic factor specific to each borrower ($\epsilon_t^i$):
+
+$$
+X_t^i = \sqrt{\rho_i} Z_t + \sqrt{1 - \rho_i} \epsilon_t^i,
+$$
+
+where $Z_t \sim \mathcal{N}(0, 1)$ and $\epsilon_t^i \sim \mathcal{N}(0, 1)$, which implies that: $X_t^i \sim \mathcal{N}(0, 1)$, and the coefficient $\rho_i = \text{corr}(X_t^i, Z_t) = \text{corr}(X_t^i, X_t^j)$ for $i \neq j$, measures the sensitivity of borrower $i$ to the systemic risk.
+
+Default occurs when $X_t^i$ falls below a critical threshold $B_i$, called the default barrier, which is linked to the PIT PD as follows:
+
+\begin{equation}
+PD_{PIT}^i(z_t) = \mathbb{P}(X_t^i < B_i \mid Z_t = z_t) = \Phi\left(\frac{B_i - \sqrt{\rho_i} z_t}{\sqrt{1 - \rho_i}}\right)
+\end{equation}
+
+where $\Phi(\cdot)$ denotes the cumulative distribution function of the standard normal distribution.
+
+By definition, the Through The Cycle (TTC) PD is given by:
+
+$$
+PD_{TTC}^i = \mathbb{P}(X_t^i < B_i) = \Phi(B_i)  \Leftrightarrow  B_i = \Phi^{-1}(PD_{TTC}^i)
+$$
+
+We can then express the PIT PD directly as a function of the TTC PD:
+
+$$
+PD_{PIT}^i(z_t) = \Phi\left(\frac{\Phi^{-1}(PD_{TTC}^i) - \sqrt{\rho_i} z_t}{\sqrt{1 - \rho_i}}\right)
+$$
+
+
+
+The systemic factor $Z_t$, which reflects the economic conditions, is then extracted as follows:
+
+$$
+Z_t = \frac{1}{\sqrt{\rho}} \left[ \Phi^{-1}\left(PD_{TTC}\right) - \Phi^{-1}\left(\hat{PD}^{PIT}(t)\right) \sqrt{1 - \rho} \right],
+$$
+
+where $\hat{PD}^{PIT}(t)$ corresponds to the observed PIT default probability at time $t$, and $\rho$ is set to 15\% in our mortgage loan portfolio in accordance with the regulatory requirements of the Basel II IRB approach.
+
+To assess the impact of macroeconomic conditions on the economic environment several regression models can be used. A decrease in $Z_t$ indicates a deterioration of economic conditions meaning the economy is moving into a more adverse state, which increases the probability of default (PIT PD). Conversely, an increase in $Z_t$ reflects an improvement in economic conditions, reducing the likelihood of defaults.
+
+The relationship between $Z_t$ and macroeconomic variables can be estimated using supervised learning methods (such as time series regression, linear regression, etc.). This allows translating a climate-induced macroeconomic shock — for example, one derived from NGFS scenarios — into a stress on $Z_t$ which will ultimately affect the PIT PD and, indirectly, the LGD through the PD-LGD dependency models discussed earlier.
+
+For the purpose of our study, we assume that the observed PiT PD is the quarterly mean of the credit risk score and the realized LGD, respectively.
+
+
+
+\subsection{Modeling the systemic factor: regression approaches and model selection}
+
+\subsubsection{Regression approaches}
+
+To model the systemic factor, it is common to 
+use explainable models. Hence, we will focus on linear regression and the Bayesian Averaging of Classical Estimates (BACE) to interpret the results. However, we will also use 'black-box' models such as SVR to challenge these models.
+
+\paragraph{Linear regression}\label{linear_reg}
+
+Linear regression is one of the most fundamental statistical methods for modelling the relationship between a dependent variable and one or more independent variables. It assumes that the target variable can be expressed as a linear combination of explanatory variables, with an error term.
+It relies on six main assumptions:
+
+\begin{enumerate}
+    \item Linearity: There is a linear relationship between the explanatory variables and the dependent variable. Hence, the general equation of linear regression is:
+    \begin{equation}
+    Y = \beta_0 + \sum_{j=1}^p \beta_j X_j + \varepsilon,
+    \end{equation}
+    where $Y$ represents the dependent variable, $(X_j)_{j=1,\dots,p}$ are the explanatory variables, $(\beta_j)_{j=1,\dots,p}$ are the coefficients to be estimated using the ordinary least squares (OLS) method, which minimizes the sum of squared errors, and $\varepsilon$ is the error term.
+    
+    \item Random sample iid from the population: The observed $N$ observations $(Y_i, X_i)_{i=1,\dots,N}$ are assumed to be independent and identically distributed (iid).
+    
+    \item Full rank: There is no perfect multicollinearity between the regressors. To check this, we use the variance inflation factor (VIF), which measures the degree to which the variance of a regression coefficient is inflated due to collinearity with other predictors. A high VIF indicates strong multicollinearity, typically suggesting that a variable is highly correlated with others in the model. As a general rule, a VIF above 10 is considered problematic.
+    
+    \item Identifiability: To avoid bias from omitted variables, the error term must satisfy $E(\varepsilon_i | X_i)=0$. This condition, known as the exogeneity assumption, ensures that the regressors $X_i$ are not correlated with the error term.
+    
+    \item Homoscedasticity and no autocorrelation: The error terms should have constant variance (homoscedasticity), i.e., $V(\varepsilon_i) = \sigma^2$, and should not be correlated, $\text{cov}(\varepsilon_i,\varepsilon_j)=0$ for all $i \neq j$. To detect heteroscedasticity, the Breusch-Pagan test is commonly used with homoscedasticity of the error term as null hypothesis. The Durbin-Watson test is widely used to detect first-order autocorrelation in regression residuals. This test is important since autocorrelated errors can lead to inefficient estimates and unreliable inference, particularly in time series, leading to spurious regression (see \textcite{granger1974spurious}).
+    
+    \item Normality: The error terms should follow a normal distribution, particularly to ensure valid inference in small samples. The Jarque-Bera and Shapiro-Wilk tests are commonly used to assess normality. In both cases, the null hypothesis is that the residuals are normally distributed.
+\end{enumerate}
+
+
+\paragraph{Bayesian Averaging of Classical Estimates (BACE)}
+
+
+The Bayesian Averaging of Classical Estimates (BACE) is a Bayesian model averaging technique designed to incorporate parameter uncertainty into regression modelling. Unlike traditional approaches that select a single model, BACE constructs multiple candidate linear regression models and computes a weighted combination of their valid estimates, i.e., the models that satisfy assumptions (2), (5), and (6) of linear regression, including stationarity of the residuals, based on their posterior probabilities. This method is quite relevant in our case, given the relatively short length of your PD series (N=26 points). With so few data points and, therefore, limited information, it is quite difficult to distinguish one model from another and to rely on frequentist selection methods such as stepwise regression or the AIC criterion.
+
+The posterior probability of each model $M_j$ given the observed data $y$ is computed as follows (\textcite{mauri2023lgd}):
+\begin{equation}
+    P(M_j | y) = \frac{P(M_j) T^{-\frac{k_j}{2}} RSS_j^{-\frac{T}{2}}}{\sum_{i=1}^{M} P(M_i) T^{-\frac{k_i}{2}} RSS_i^{-\frac{T}{2}}},
+\end{equation}
+where $RSS_j$ is the residual sum of squares for model $M_j$, $k_j$ is the number of regressors, and $T$ is the number of observations. The prior probability $P(M_j)$ is typically set to be uniform across all models.
+\par
+After computing posterior model probabilities, BACE estimates regression coefficients by averaging across models weighted by their posterior probabilities:
+\begin{equation}
+    E(\beta_i | y) = \sum_{j=1}^{M} P(M_j | y) \hat{\beta}_{i,j},
+\end{equation}
+where $\hat{\beta}_{i,j}$ represents the estimate of the $i$-th variable in valid model $M_j$. This approach ensures robustness by incorporating uncertainty in model selection.
+\par
+Additionally, BACE calculates the posterior inclusion probability (PIP) for each independent variable, which represents the probability that the variable should be included in the final model:
+\begin{equation}
+    P(\beta_i | y) = \sum_{j=1}^{M} P(M_j | y) 1_{M_j}(\beta_i).
+\end{equation}
+
+A higher PIP indicates that the variable is more relevant in explaining the dependent variable.
+
+% \paragraph{Support Vector Machine for regression (SVR) model}
+
+% \subsubsection{Features \& model selection}
+% \paragraph{Variables selection}
+
+% Two criteria were used to select the model variables:
+% \begin{itemize}
+%     \item Low multicollinearity criterion: To mitigate bias risks due to highly correlated variables, we excluded certain variables. Based on the elbow rule applied to the Spearman correlation matrix, we identified a threshold for detecting strongly correlated variables; this threshold was set at 70\%.
+%     \item High correlation criterion: When the correlation between two variables exceeded an absolute threshold of 0.7, we retained the variable most correlated with the systemic factor.
+% \end{itemize}
+
+% It is important to highlight that the Spearman correlation coefficient was chosen over the Pearson coefficient because the scatter plots of variables with factor $Z$ do not all suggest linear relationships. Theoretically based on the rank of observations, the Spearman coefficient also has the advantage of being robust in the presence of extreme values.
+% Additionnaly, since we are dealing with economic variables, we need to make sure that the observed relation is coherent.
+
+\subsubsection{Model selection}
+
+In order to choose the best model, we measure the prediction error of the models using the mean squared error (MSE), root mean squared error (RMSE), mean absolute error (MAE), and mean absolute percentage error (MAPE). The model with the best performance based on these metrics will be selected.
+
+These metrics are justified as follows:
+\begin{itemize}
+    \item Root Mean Squared Error (RMSE): It calculates the square root of average squared differences between predicted and actual values. Squaring the errors penalizes larger deviations more than smaller ones, making it useful for models where large errors are particularly undesirable. The square root of the mean squared error provides error measurements in the same unit as the dependent variable, making it more interpretable. It is given by:
+    \begin{equation*}
+    RMSE = \sqrt{\frac{1}{N} \sum_{i=1}^{N} (y_i - \hat{y}_i)^2},
+    \end{equation*}
+    where $y_i$ is the actual value, $\hat{y}_i$ is the predicted value, and $N$ is the number of observations.
+
+    \item Mean Absolute Error (MAE): It measures the average absolute differences between predicted and actual values, treating all errors equally and being less sensitive to large errors compared to MSE. It is given by:
+      \begin{equation*}
+      MAE = \frac{1}{N} \sum_{i=1}^{N} |y_i - \hat{y}_i|
+      \end{equation*}
+    
+    \item Mean Absolute Percentage Error (MAPE): It measures the average percentage deviation of predicted values from actual values. This metric is useful for understanding the relative error in percentage terms, making it more interpretable across different scales. It is defined as:
+      \begin{equation*}
+      MAPE = \frac{1}{N} \sum_{i=1}^{N} \left| \frac{y_i - \hat{y}_i}{y_i} \right| \times 100
+      \end{equation*}
+\end{itemize}
+
+Since overfitting is somewhat inevitable due to the small sample size (N=26), we will implement a rolling prediction approach starting with 15 points to identify the model that exhibits the least overfitting.
+
+\subsection{Selected PD-LGD dependency models}
+
+\subsubsection{The Structural Merton LGD}
+
+The structural Merton LGD model links the LGD to the probability of default (PD) through the firm's asset value dynamics as presented in Section \ref{merton-presentation}. Under this model, we can express the recovery rate as the value of the firm's assets divided by its debt at maturity T. The recovery rate at time T, denoted $RR_T$, given that the company defaults, can be written as : 
+$$
+RR_T := E[\frac{A_T}{D_T} | A_T < D_T], 
+$$ 
+retaining the same notation as in Section \ref{merton-presentation}. Using Itô's lemma, we can derive an analytical expression for the recovery rate, from which we obtain the LGD, defined as $1 - RR_T$.
+
+Under the assumption of the Merton firm model, the LGD is expressed as: 
+
+\begin{equation}
+LGD_{\theta}(PD) = 1 - \frac{\Phi\left(\Phi^{-1}(PD) - \sigma \sqrt{T}\right)}{PD} \exp\left(-\sigma \sqrt{T} \Phi^{-1}(PD) + \frac{1}{2} \sigma^2 T\right),
+\end{equation}
+
+where$\Phi(\cdot)$ is the cumulative distribution function of the standard normal distribution,$\sigma$ is the asset volatility, and$T$ is the time to maturity, typically set to 1 year for credit risk applications.
+
+To calibrate the volatility of the asset value$\sigma$, we minimize the following objective function:
+
+\begin{equation}
+\widehat{\sigma} := \arg \min_{\sigma} \left(RR_{\theta}\left(PD^{TTC}\right) - RR^{TTC}\right)^2,
+\end{equation}
+
+where$RR_{\theta}$ represents the recovery rate predicted by the model, and$RR^{TTC}$ is the observed through-the-cycle recovery rate. This calibration ensures that theoretical recovery rates align with the observed ones, thereby allowing the model accurately captures the relationship between PD and LGD.
+
+\subsubsection{Frye-Jacobs model}
+
+The Frye-Jacobs LGD (FJ-LGD) is a recent model that relates asymptotic (i.e. for an infinite portfolio) DR (i.e., empirical PiT PD) and PiT LGD, under three main assumptions : 
+\begin{itemize}
+    \item The loss rate and the default rate are assumed to have a comonotonic relation, meaning that those paramters approximativeley take the same quantile in their distributions.
+    \item The loss rate and the default rate follow a Vasicek two-parameters distribution
+    \item The correlation parameter are shared between the default rate and the loss rate.
+\end{itemize}
+
+Under these assumptions, Frye and Jacobs modelled the LGD as a function of TTC PD, TTC LGD and the asset correlation $\rho$. The model is given by the following equation:
+
+$$
+LGD = \frac{1}{PD_{PIT}} \times \phi \left(\phi^{-1}(PD_{PIT}) -  \frac{ \phi^{-1}(p_{DR}) -  \phi^{-1}(p_{LR}) }{\sqrt{1 - \rho}} \right),
+$$
+
+where $\phi$ is the standard normal cumulative distribution function, $PD_{PIT}$ is the probability of default at the PIT (Point-In-Time), $p_{DR}$ is the TTC PD (Through-The-Cycle) at the default rate and $p_{LR}$ is TTC loss rate, i.e. $p_{LR} = PD_{TTC} \times LGD_{TTC}$. The asset correlation $\rho$ is the correlation between the default of the obligor and the default of the portfolio.
+
+The FJ-LGD function thus states that if conditions lead to a high PD, they also result in a high LGD, relative to an initial risk parameter defined using the TTC credit metrics.
+
+It is a recent model that has the advantage of being easy to use, requiring only a few parameters that are already available in banks.
+
+
+\subsubsection{Hillebrand model}
+
+Hillebrand's model establishes a framework that allows for a more flexible dependency between PD (Probability of Default) and LGD (Loss Given Default) than that suggested by the Frye-Jacobs model. It considers that, in addition to a common influence of factors on both variables, some factors may have an opposite influence (when weights are negative) or may affect only one of the two variables (when weights are zero). %\textcolor{red}{For example, the regional real estate index may influence LGD without affecting the PD of a small export-oriented company.}%A typical example mentioned by Hillebrand is the regional real estate index, which may influence LGD without affecting the PD of a small export-oriented company.
+
+In this regard, within the context of Hillebrand's model, PD and LGD are linked by a stochastic relationship.
+In this framework, PD and LGD are each driven by two systematic factors, $Z$ and $Y$ %\textcolor{red}{respectively}, which are assumed to follow a standard normal distribution.
+
+PD(Z) is modelled based on the Merton Model, and we denote G(Y) as the expected LGD given Y. %, \textcolor{red}{i.e. $E(LGD|Z)$}.\\
+
+%\hspace*{20mm} \paragraph*{Modeling G(Z)}
+%\textcolor{red}{To model $G(Z),$} 
+This approach assumes that applying the probit function \( \Phi^{-1} \) to the data reveals an underlying \textbf{linear structure}. Based on this assumption, the function \( G \) is modeled as follows:
+
+
+\begin{equation}
+G(y) = \Phi(a - by), \quad y \in \mathbb{R}
+\label{eq:GZ}
+\end{equation}
+where $ a, b \in \mathbb{R} $ are parameters.
+
+Furthermore, $ Y $ can be decomposed into two components: $ Z $ and an independent factor $ X $.  
+This decomposition is defined as follows:
+
+\[
+d := \operatorname{cov}(Y,Z), \quad X := \frac{1}{\sqrt{1 - d^2}}(Y - dZ).
+\] 
+
+By construction, $ X $ follows a standard normal distribution and is independent of $ Y $.  
+This leads to the decomposition:
+
+\begin{equation}
+Y = dZ + \sqrt{1 - d^2} X.
+\end{equation}
+
+This formulation highlights the flexibility in the dependence structure between LGD and PD.  
+The factor $ X $ can thus be interpreted as the aggregated influence of systematic factors on $ \mathbb{E}(\text{LGD} \mid Y) $,  
+which remains independent of the systematic influence on $ \text{PD}(Z) $.
+
+From (3.5) and (3.6), we obtain:
+\begin{align}
+    \Phi^{-1} \big( \mathbb{E}(\text{LGD} \mid Y) \big) &= a - bdZ - b \sqrt{1 - d^2} X \\
+    &= a - \frac{bdc}{e} + \frac{bd}{e} \Phi^{-1}(\text{PD}(Z)) + b \sqrt{1 - d^2} X,
+\end{align}
+%Plugging equation (3.3) into (3.7) yields the linear regression equation:
+% \begin{equation}
+% \Phi^{-1}(\mathbb{E}(\text{LGD} \mid Z)) = a - b d_c e + b d_e \Phi^{-1}(\text{PD}(Y)) - b \sqrt{1 - d^2} X,
+% \end{equation}
+where $\Phi^{-1}(\mathbb{E}(\text{LGD} \mid Y))$ is the response variable, $\Phi^{-1}(\text{PD}(Z))$ the predictor variable, and $X$ the residual term. %\textcolor{red}{The parameters $(a, b, c, d, e)$ are involved in the model, with:
+%$$
+%c = \frac{\Phi^{-1}(\text{PD})}{\sqrt{1 - \beta^2}} \quad \text{and} \quad e = \frac{\sqrt{\beta}}{\sqrt{1 - \beta^2}},
+%$$
+%being predefined, while $a$, $b$, and $d$ must be calibrated, subject to the constraints $bd > 0$ and $e > 0$.}
+
+%\hspace*{20mm} \subsubsection*{ Model Calibration Issues}
+
+For this regression model, we obtain estimates for the intercept $ a - \frac{bdc}{e} $, the slope $ \frac{bd}{e} $, and the standard deviation $ b \sqrt{1 - d^2} $ of the residuals.  
+For known values $ c $ and $ e $, this yields estimates for $ a $, $ b $, and $ d $.  
+For unknown values $ c $ and $ e $, we estimate them first, and then obtain plug-in estimates for $ a $, $ b $, and $ d $.
+
+With these estimates, we can estimate the downturn LGD at level $ \alpha \in (0,1) $ from equation (3.5) as follows:
+
+\begin{equation}
+\mathbb{E}(\text{LGD} \mid Z = z_{\alpha}) \approx \Phi(\hat{a} - \hat{b} \cdot z_{\alpha})
+\end{equation}
+
+where $ z_{\alpha} $ is the standard normal $ \alpha $-quantile.\\
+
+%\textcolor{blue}{A déplacer}Thus, for the Hillebrand model to be applicable, $\Phi^{-1}(\mathbb{E}(\text{LGD} \mid Z))$ is assumed to be linearly related to $\Phi^{-1}(\text{PD}(Y))$. the following assumption must be satisfied:
+
+% \begin{itemize}
+%     \item $\Phi^{-1}(\mathbb{E}(\text{LGD} \mid Z))$ must be linearly related to $\Phi^{-1}(\text{PD}(Y))$.
+% \end{itemize}
+%For the restricted period chosen in this study, this condition is not met. As shown in the figure \ref{} \textcolor{red}{show figure}, the linear relationship between the probit transformation of PiT PD and LGD PiT is primarily observed at the end of the period, which hinders the modelling process in our context. Consequently, although the Hillebrand model is promising, it could not be adapted to our data.
+
+
+\section{Implementation \& results}
+
+
+
+\subsection{Modeling of the systemic factor}
+\subsubsection{Calibration of systemic factor}
+
+We proceed with the estimation of the systemic factor trajectory using the relationship that links the systemic factor to the point-in-time (PiT) probability of default (PD) in the ASRF model. By assumption, the calibrated systemic factor reflects the state of the economic cycle.
+
+Since default rates for both individual and professional borrowers can serve as indicators of economic and financial distress, figure~\ref{fig:systemic_factor} presents their joint trajectory. Unsurprisingly, the observed dynamics reveal a negative relationship between these rates and the systemic factor.
+
+Overall, the results suggest that the calibrated systemic factor captures fluctuations in the economic cycle and the onset of financial crises. In fact, the period under study corresponds to the aftermath of the subprime crisis. An increase in mortgage defaults led to a decline in the systemic factor, signalling economic distress, before gradually recovering.
+
+In this context, and consistent with stress-testing practices, projecting the systemic factor is justified. By leveraging climate impact data on the macroeconomy provided by the NGFS, we can apply stress to PD estimates in order to forecast the corresponding evolution of LGD.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{images/systemic_factor.png}
+    \caption{Sytemic factor}
+    \label{fig:systemic_factor}
+\end{figure}
+
+\subsubsection{Macroeconomic Variables}
+In order to estimate the PiT PD and LGD models according to the top-down approach, we required macroeconomic variables. We were provided with a dataset containing eight quarterly macroeconomic indicators spanning the period from 2010 to 2021. This dataset was compiled from various open-access sources, including the World Bank, the Federal Reserve Bank of St. Louis, and Yahoo Finance. The time span of these variables was restricted to align with that of the portfolio.
+
+\begin{itemize}
+    \item GDP Growth Rate, expressed as a percentage, measures the annual change in a country's Gross Domestic Product (GDP), indicating economic expansion or recession.
+    
+    \item Inflation Rate reflects the percentage change in the general price level of goods and services, commonly derived from the Consumer Price Index (CPI), and influences purchasing power and monetary policy decisions.
+    
+    \item House Prices (residential) index, benchmarked at 100 in 2019, illustrates the relative change in residential property prices.
+    
+    \item Interest Rate significantly impacts borrowing and investment; it represents the cost of credit and the return on savings.
+    
+    \item Long-Term Interest Rate generally applies to loans exceeding ten years and serves as a key indicator of market expectations regarding future inflation and risk.
+    
+    \item Effective Exchange Rate (EER) is an index-based measure of a currency's value relative to a basket of foreign currencies, benchmarked at 100 in 2017. A higher value indicates appreciation, while a lower value suggests depreciation.
+    
+    \item Equity Prices index, also benchmarked at 100 in 2017, tracks stock market performance. In the case of France, the selected index is the CAC 40.
+    
+    \item Oil Prices, expressed in US dollars per barrel, influence global inflation, production costs, and trade balances, affecting both oil-importing and oil-exporting economies.
+\end{itemize}
+
+Before constructing the regression model, a feature engineering step is performed. In particular, to avoid spurious regression, the variables must be stationary (see \textcite{granger1974spurious}). Once stationarity is ensured, the regression model can be estimated. For non-stationary variables, we prefer to use the first difference for those expressed as rates, and the relative change for those expressed in absolute terms, in order to achieve stationarity.
+
+
+\renewcommand{\arraystretch}{1.2}
+{\small
+\begin{longtable}{p{5cm}|cc|cc|cc}
+\caption{Macroeconomic Variables} \label{tab:macro_var} \\
+\toprule
+\textbf{Variable} & \multicolumn{2}{c|}{\textbf{At level}} & \multicolumn{2}{c|}{\textbf{1st diff.}} & \multicolumn{2}{c}{\textbf{Relative change}} \\
+\cmidrule{2-7}
+& Test stat. & P-value & Test stat. & P-value & Test stat. & P-value \\
+\midrule
+Effective exchange rate (index; 2017=100) & -0.80 & 0.81 & -3.67 & \textbf{0.00} & -- & -- \\
+Equity prices (index; 2017=100)           & -1.42 & 0.57 & --    & --          & -5.40 & \textbf{0.00} \\
+GDP Growth Rate (in \%)                   & -5.58 & \textbf{0.00} & -- & -- & -- & -- \\
+House prices (residential) (index; 2019=100) & -0.16 & 0.94 & -- & -- & -3.30 & \textbf{0.01} \\
+Inflation rate (in \%)                    & -0.58 & 0.87 & -4.20 & \textbf{0.00} & -- & -- \\
+Long-term interest rate (in \%)           &  0.24 & 0.97 & -3.83 & \textbf{0.00} & -- & -- \\
+Oil price (US\$ per barrel)               & -0.20 & 0.93 & --    & --          & -4.02 & \textbf{0.00} \\
+Unemployment rate (in \%)                 & -1.55 & 0.51 & -3.03 & \textbf{0.03} & -- & -- \\ \hline
+Systemic factor $Z$                   & -3.15 & \textbf{0.02} & -- & -- & -- & -- \\
+\bottomrule
+\end{longtable}
+\tiny
+\textit{Note:} Test stat. = Test statistic, 1st diff. = First difference, i.e. $x_t - x_{t-1}$, Relative change = $\frac{x_t - x_{t-1}}{x_{t-1}}$
+}
+
+\vspace{3mm}
+Under the null hypothesis, the Augmented Dicker Fuller (ADF) test statistically validates the presence of unit roots, i.e. the variable follows a random walk and hence is not stationarity. When there is not enough statistical evidence not to reject this hypothesis (the theoretical critical value greater than the calculated test statistic or test probability less than the threshold), we conclude that the variables are stationary. Using the p-value, analysis of table \ref{tab:macro_var} shows, for example, that :
+
+\begin{itemize}
+    \item the Z systemic factor, the GDP growth rate are stationary at level, i.e. without any transformation ;  
+    \item the long term interest rate is stationary in the first difference;
+    \item the oil prices are stationary in relative change.
+\end{itemize}
+
+Additionally, since we are dealing with economic variables, we must ensure that the observed relationships are economically coherent. Therefore, the house price index, inflation, long-term interest rate, unemployment rate, and oil prices are expected to have a negative impact on the state of the economic cycle. Conversely, GDP and equity prices should have a positive impact, while the effective exchange rate (EER) remains unconstrained.
+
+It is important to highlight that the Spearman correlation coefficient (see figure \ref{fig:spearman-corr}) was chosen over the Pearson coefficient because the scatter plots of variables with factor $Z$ do not all suggest linear relationships (see figure \ref{fig:scatter-corr-Z-macro} in appendice). Theoretically based on the rank of observations, the Spearman coefficient also has the advantage of being robust in the presence of extreme values.\\
+
+However, the observed inflation rate and equity prices do not follow the expected economic signs. Nevertheless, there may be an explanation. During the early stages of recovery, output begins to grow and inflation may rise as demand for goods and services increases. As long as inflation remains moderate, it is typically regarded as a sign of returning economic strength (see \textcite{blanchard2017macroeconomics}).%Moreover, if consumers choose to spend rather than invest, this may decrease demand for financial assets, potentially affecting equity prices.}
+
+Moreover, these Spearman correlations are not statistically significant due to the short observation period. Hence, they will not be removed from the set of eligible variables for the modelling of the systemic factor.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{images/corr_Z.png}
+    \caption{Spearman correlation matrix between the systemic factor and the variables}
+    \label{fig:spearman-corr}
+\end{figure}
+
+\subsubsection{Models estimation}
+To select the best model for predicting the systemic factor, we focus on the one that exhibits the least overfitting, based on the RMSE and MAE performance metrics presented earlier. In our case, the linear regression model with stepwise variable selection shows the lowest level of overfitting (see Table~\ref{tab:model_comparison}).
+
+In the interpretable model category, linear regression—also known as ordinary least squares (OLS)—achieves a relatively high $R^2$ of 0.60. However, the increase in RMSE between the training and test samples (169\%) is worse than that observed in other models. The BACE model performs similarly to the OLS stepwise model in terms of RMSE, but its MAE deteriorates between the training and test sets, indicating that, in absolute terms, it does not generalise well.
+
+The OLS stepwise model improves both RMSE and MAE performance between the training and test sets, suggesting that removing irrelevant variables enhances predictive accuracy. Moreover, it achieves an $R^2$ of 0.52, meaning it explains 52\% of the variability in the data, which is reasonably good in practice. It is also associated with a Durbin-Watson statistic close to 2, indicating that the residuals are not autocorrelated and the regression results are therefore reliable.
+
+The SVR model, which serves as the main challenger, appears to outperform the others in terms of$ R^2$ (0.84), indicating that it captures the largest proportion of variance in the data. However, its ability to generalise is poor, as reflected by a Durbin-Watson statistic of 0.42, suggesting that the residuals are autocorrelated.
+
+While the OLS stepwise model does not offer the highest explanatory power in terms of$ R^2$, it minimises overfitting and delivers the most stable estimates in rolling predictions, making it a suitable choice for systemic risk forecasting.
+
+\begin{table}[H]
+    \centering
+    \vspace{0.3cm}
+    \label{tab:model_comparison}
+    \begin{tabular}{ll|ccc|c}
+    \toprule
+    \multicolumn{2}{c}{\textbf{Metrics}} & \textbf{OLS} & \textbf{OLS stepwise} & \textbf{BACE} & \textbf{SVR} \\
+    \midrule
+    \multirow{3}{*}{RMSE} & Train  & 0.15 & 0.17 & 0.17 & 0.09 \\
+                          & Test   & 0.41 & 0.29 & 0.30 & 0.23 \\
+                          & Evolution & 1.69 & 0.75 & 0.87 & 1.49 \\ \hline
+    \multirow{3}{*}{MAE}  & Train  & 0.12 & 0.13 & 0.13 & 0.09 \\
+                          & Test   & 0.33 & 0.25 & 0.28 & 0.22 \\
+                          & Evolution & 1.62 & 0.91 & 1.09 & 1.50 \\[3mm] \hline
+    \multicolumn{2}{c}{ $R^2$} & 0.60 & 0.52 & 0.52 & 0.84 \\ \hline
+    \multicolumn{2}{c}{Durbin-Watson} & 2.31 & 1.86 & 1.82 & 0.42 \\
+    \bottomrule
+    \end{tabular}
+    \caption{Model comparison}
+\end{table}
+
+
+We interpret the estimated coefficients of the OLS stepwise model, subject to validation of the models used. The results show that, during the study period and unlike other macroeconomic factors, moderate inflation rate, after a period of recession, strengthen the economic situation and are therefore positively correlated with the risk of mortgage loan defaults.
+
+Finally, the R-square obtained are seems good, and the Fisher test probabilities of the Fisher tests show that the models are significant overall. The tests are performed at the significance level of 5\%.
+
+\vspace{1cm}
+
+\begin{longtable}{lp{3cm}p{3cm}p{3cm}}
+    \label{tab:stepwise_regression_results}\\
+        \toprule
+        & Coefficients &  P>|t| & CI 95\% \\
+        \hline
+        Intercept & -0.1558 & 0.001 & [-0.244; -0.068] \\
+        Inflation rate &  0.6088  & 0.004 & [0.221; 0.996] \\
+        Oil price & -1.0436 & 0.008 & [-1.781; -0.306] \\
+        House prices (residential) & -9.3111  & 0.111  & [-20.966 ; 2.344] \\
+        Long term interest rate & -0.1846  &  0.245  & [-0.507 ; 0.137] \\
+        \hline
+        \multicolumn{4}{c}{$R^2 = 0.511; \ R^2 Adj = 0.408; \
+        \textit{Fisher test (P-value)} = 0.00652; \
+        AIC = -7.828;\
+        BIC = -1.938$}\\
+        \hline
+        \caption{Stepwise linear regression results}
+\end{longtable}
+
+To ensure the validity of the selected model, we apply several diagnostic tests. The Breusch–Pagan test is used to assess heteroscedasticity, while the Durbin–Watson test evaluates the presence of autocorrelation in the residuals. To verify the normality of residuals, we employ both the Shapiro–Wilk test and the Jarque–Bera test. We also check for the absence of multicollinearity among the selected explanatory variables, as well as the stationarity of the residuals. Table~\ref{tab:diag_test_td} summarises the results obtained. 
+From this table, we deduce that the fitted model has good property, making it a reliable model for the systemic factor $Z_t$.
+
+\begin{table}[H]
+    \centering
+    
+    \label{tab:diag_test_td}
+    \begin{tabular}{lc}
+    \toprule
+    Tests & Results \\
+    \hline
+    Durbin-Watson & 1.860 \\
+    Max VIF & 2.490 \\
+    Breusch-Pagan (P-value) & 0.443 \\
+    Shapiro-Wilk (P-value) & 0.974 \\
+    Jarque Bera (P-value) &  0.940 \\
+    Unit root (P-value) & 0.000 \\
+    \bottomrule
+    \end{tabular}
+    \caption{Diagnostic tests of the OLS stepwise model}
+\end{table}
+
+
+To refine the study of the performance of the models, we show in the following graphics (see \ref{fig:ols-step}) the extracted systemic factor Z and that estimated by the model over the entire portfolio.
+We can see that the calibrated $Z$ factor seems to follow the trend of the observed one. However, the fitted model appears to overestimate the systemic factor. This can be explain by the fact that we do not have enough data points to train the model.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{images/NGFS/OLS_step.png}
+    \caption{Fitted values of linear regression with stepwise variables selection}
+    \label{fig:ols-step}
+\end{figure}
+
+\subsubsection{Projections of the PiT PD}
+
+Instead of showing the projections of the systemic factor using the OLS stepwise model, it is preferable to present the projections of the Point-in-Time (PiT) Probability of Default (PD) using the ASRF model, which links the systemic factor to the PiT PD. This approach facilitates a better interpretation of the results since the PiT PD is inversely correlated to the systemic factor.
+
+As a result, we observe that the baseline scenario, in which no structural changes occur relative to today, is the one where the portfolio exhibits the lowest probability of default. In fact, inflation emerges as the primary driver of the systemic factor in the OLS stepwise regression model. According to the NiGEM data, at the beginning of 2025, we observe an acceleration in inflation, which has a positive impact on the systemic factor, and consequently, a negative correlation on the probability of default.
+
+Moreover, all the climate risk scenarios, in which policies are implemented to account for climate risk based on historical trends and potential risk amplitudes, lead to an abrupt increase in mortgage portfolio defaults before slightly decreasing. Moreover, the Net Zero 2050 scenario has the most significant impact, as it results in the highest default rates in our portfolio. This is logical since this scenario is known to be the strictest, given that climate policies are enforced to achieve a 1.5°C temperature target by 2050.
+
+At the end of the projected period, i.e., 2050, we observe that the Delayed Transition scenario results in the highest default rate. Before 2030, it is the scenario with the second-lowest default rate. However, in 2030, the probability of default increases abruptly, reaching 25\%. This is because the Delayed Transition scenario assumes that global annual emissions do not decrease before 2030. Consequently, strong political incentives become necessary to successfully limit global warming to less than 2°C, leading to an increase in the default rate of our portfolio.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{images/NGFS/Projections Z/PD_PIT_STEP.png}
+    \caption{Projection of PiT PD of Stepwise OLS model}
+    \label{fig:PD_PIT_BACE}
+\end{figure}
+
+
+\subsection{Projections of the LGD through PD-LGD dependency models}
+
+As specified in the theoretical framework, the Hillebrand model relies on the assumption that the probit transformation of the conditional LGD, \( \Phi^{-1}(\mathbb{E}[\text{LGD} \mid Z]) \), is linearly related to that of the PD, \( \Phi^{-1}(\text{PD}) \).
+
+However, this assumption does not hold for our data, as illustrated in Figure~\ref{hilebrant}.  
+As a result, the Hillebrand model will not be considered further in this section. Only the Frye-Jacobs model and the structural Merton-based model will be presented and evaluated to assess the impact of climate risk scenarios on the LGD.\\
+
+
+Using the projected PiT PD, we can now assess the impact of climate risk scenarios on the LGD through two PD-LGD dependency models: the Frye-Jacobs model and the structural Merton-based model.
+
+% \subsubsection{Frye-Jacobs model results}
+
+% \subsubsection{Structural Merton model results}
+
+% The minimisation problem given above leads to a $\sigma$ estimation of 0,447. This value indicates a moderate asset volatility, which is consistent with the expected behavior of the portfolio under normal economic conditions.
+
+% With the asset volatility estimated, we can now compute the Merton-LGD. Results are shown in figure \ref{fig:middle_plot}.
+
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.75\linewidth]{middle_plot_white_bg.png}
+%     \caption{Comparison of observed vs estimated LGD PIT}
+%     \label{fig:middle_plot}
+% \end{figure}
+
+% We observe that the estimated LGD follows the trend of the observed LGD to a certain extent. However, it fails to fully capture the variability and peaks in the observed data. This discrepancy may be attributed to the simplifying assumptions of the Merton model, such as the log-normal distribution of asset values and the fixed recovery rate. Additionally, the model's sensitivity to the estimated asset volatility $\sigma$ could also play a role in the differences between the observed and estimated LGD values.
+
+% \textcolor{red}{à voir comment on lie les trois modèles; tableau ?}
+% Performance metrics are as followed : 
+% RMSE : 0.02391306 
+% MAE : 0.01922827 
+% MAPE : 9.578581 \%
+
+% Overall, the model demonstrates a good fit to the observed data, with a MAPE below 10\%, indicating that it is suitable for practical applications despite its limitations in capturing extreme variability.
+% \subsubsection{Hillebrand model results}
+% \subsubsection{Projections of the LGD}
+
+The performance of  selected models is presented in Table\ref{tab:pd_lgd_results}. As we can see, the structural Merton-based model exhibits the best performance. In fact, using this model, we obtain an RMSE of 0.0239, an MAE of 0.0190, and a MAPE of 9.57\%, meaning that the fitted values of this model deviates of only 9.57\% from the true values.
+
+%\begin{table}[h]
+%    \centering
+%    \begin{tabular}{lccc}
+%        \hline
+%        \textbf{Metrics} & \textbf{Hillebrand} & \textbf{Frye-Jacobs} & \textbf{Structural merton} \\
+%        \hline
+%        RMSE & 0.0580 & 0.0418 & 0.0239 \\
+%        MAE  & 0.0500 & 0.0341 & 0.0190 \\
+%        MAPE & 23.9516 & 16.0010 & 9.5786 \\
+%        \hline
+%    \end{tabular}
+%    \caption{PD-LGD dependency models results}
+%    \label{tab:pd_lgd_results}
+%\end{table}
+
+
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{lccc}
+        \hline
+        \textbf{Metrics} &  \textbf{Frye-Jacobs} & \textbf{Structural merton} \\
+        \hline
+        RMSE  & 0.0418 & 0.0239 \\
+        MAE   & 0.0341 & 0.0190 \\
+        \hline
+    \end{tabular}
+    \caption{PD-LGD dependency models results}
+    \label{tab:pd_lgd_results}
+\end{table}
+
+For the Merton-based model, we estimated the sole parameter, namely the asset volatility $\sigma$, at 0.447. This value reflects a moderate level of asset volatility, which is consistent with the expected behaviour of the portfolio under normal economic conditions. Once the asset volatility was estimated, the Merton-based LGDs were computed in order to compare the model’s performance. The results are presented in Figure~\ref{fig:middle_plot}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{middle_plot_white_bg.png}
+    \caption{Comparison of observed vs estimated LGD PIT}
+    \label{fig:middle_plot}
+\end{figure}
+
+We observe that the estimated LGD follows the trend of the observed LGD to a certain extent. However, it fails to fully capture the variability and peaks in the observed data. This discrepancy may be attributed to the simplifying assumptions of the Merton model, such as the log-normal distribution of asset values and the fixed recovery rate. Additionally, the model's sensitivity to the estimated asset volatility $\sigma$ could also play a role in the differences between the observed and estimated LGD values.
+
+Overall, the model demonstrates a good fit to the observed data, with a MAPE below 10\% (i.e. 9.578\%), indicating that it is suitable for practical applications despite its limitations in capturing extreme variability.
+
+We will then present the result of the projected LGD using the structural merton model. Figure \ref{fig:merton_projections} shows the result of this projections. As for the PiT PD , we can observe that the scenario in which we have the lowwer impact on the lgd is the baselinde sceario, whereas the scenario with the higher impact is the delayed transtion one.
+
+\begin{figure}[H]
+   \centering
+   \includegraphics[width=\linewidth]{images/NGFS/Projections Z/LGD_Merton_STEP.png}
+   \caption{Merton model}
+   \label{fig:merton_projections}
+\end{figure}
+
+When comparing the LGD projections using the Frye–Jacobs model, we observe that, relative to the Merton-based model, the Frye–Jacobs model tends to produce lower expected losses given default. Moreover, the Delayed Transition scenario results in the highest LGD for counterparties. However, the Frye–Jacobs model generally underestimates stressed LGD compared to what is observed in the portfolio (see table \ref{tab:lgd_scenarios}).
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Scenario} & \textbf{Mean LGD} & \textbf{75th Pctl} & \textbf{90th Pctl} & \textbf{Max LGD} \\
+\midrule
+\multicolumn{5}{c}{\textbf{Observed LGD}} \\
+\midrule
+
+Overall & 0.2030 & 0.2050 & 0.8100 & 1.0000 \\
+\midrule
+\multicolumn{5}{c}{\textbf{Frye-Jacobs LGD}} \\
+\midrule
+
+Baseline & 0.1799 & 0.1817 & 0.1828 & 0.2246 \\
+Below 2°C & 0.1796 & 0.1864 & 0.1879 & 0.1884 \\
+Delayed Trans. & 0.1844 & 0.1935 & 0.1945 & 0.1992 \\
+NDCs & 0.1790 & 0.1851 & 0.1860 & 0.1871 \\
+Net Zero 2050 & 0.1825 & 0.1877 & 0.1906 & 0.1930 \\
+\midrule
+\multicolumn{5}{c}{\textbf{Merton-based LGD}} \\
+\midrule
+
+Baseline & 0.2071 & 0.2079 & 0.2085 & 0.2280 \\
+Below 2°C & 0.2069 & 0.2102 & 0.2109 & 0.2111 \\
+Delayed Trans. & 0.2092 & 0.2136 & 0.2140 & 0.2162 \\
+NDCs & 0.2066 & 0.2096 & 0.2100 & 0.2105 \\
+Net Zero 2050 & 0.2083 & 0.2108 & 0.2122 & 0.2133 \\
+\bottomrule
+\end{tabular}
+\caption{Impact of climate-related risk scenarios on LGD Distribution using top-down approach}
+\label{tab:lgd_scenarios}
+\end{table}
+
+
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=1\textwidth]{images/NGFS/avg_lgd.png}
+%     \caption{Projected average LGD from 2022 to 2050 under different models}
+%     \label{fig:avg_lgd_td}
+% \end{figure}
+
+
+
+\newpage 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% BOTTOM UP
+\chapter{Integration of climate risk using the bottom-up approach}\label{bottom-up_chapter}
+
+In this chapter, we focus on the second approach to incorporate the impact of climatic factors on the LGD : the Bottom-Up approach.
+
+The Bottom-Up is based on the hypothesis that climate risk (physical and transition) may affect each counterparty in the portfolio individually, and thus have an impact on the bank's final estimate of losses. This approach is summarized in the following diagram :
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{images/bottom-up.png}
+    \caption{Overview of the bottom-up approach}
+    \label{fig:bottom-up-overview}
+\end{figure}
+
+% This chapter presents a bottom-up framework for integrating climate risk into LGD estimation.
+% The approach is structured into four main components: a preliminary descriptive analysis of the data, the development of LGD estimation models, the assessment of physical risk through flood exposure, and the impact of transition risk on real estate valuation.
+
+For this approach, we focus on exposures backed by mortgage guarantees. This choice is driven by the fact that the characteristics and vulnerability of real estate collateral represent the primary channel through which LGD will be stressed.
+
+The following sections are structured around four main components: a preliminary descriptive analysis of the data, the development of LGD estimation models, the assessment of physical risk through flood exposure, and the impact of transition risk on real estate valuation.
+
+\section{Descriptive analysis }
+
+To understand the structure of our data, a preliminary descriptive analysis was conducted to explore both the dynamics of the LGD and the key drivers likely to influence its variability.
+
+\subsection{Univariate descriptive statistics}
+\subsubsection{Descriptive statistics of LGD}
+
+The descriptive statistics of LGD for counterparties with mortgage guarantees show a high variability in losses. With an average of 28.3\% and a median of 11.4\%, most observations exhibit relatively low losses, although some reach 100\%. The high standard deviation (33.7\%) indicates significant dispersion, and the quartiles reveal an asymmetric distribution with considerable differences in recovery levels. 
+As a reminder, LGD values are capped at 1 in this study, as some recorded losses exceeded this threshold.
+
+% \bigskip
+\begin{table}[H]
+    \centering
+    \begin{tabular}{cccccccc}
+        \toprule
+        \textbf{Count} & \textbf{Mean} & \textbf{Std Dev} & \textbf{Min} & \textbf{Q1 (25\%)} & \textbf{Median (50\%)} & \textbf{Q3 (75\%)} & \textbf{Max} \\
+        \midrule
+        3,282 & 0.283 & 0.337 & 0.000 & 0.032 & 0.114 & 0.412 & 1.000 \\
+        \bottomrule
+    \end{tabular}
+    \caption{Descriptive statistics of LGD for mortgage-backed loans}
+    \label{tab:lgd_stats}
+\end{table}
+
+
+To better understand this distribution, we  now analyze the distribution of LGD through a more visual approach. For this purpose, we present below the histogram of realized LGD (see figure \ref{fig:dist_LGD}).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/Stat_desc_Buttom-up/LGD_dist.png}
+    \caption{Distribution of LGD for mortgage-backed loans}
+    \label{fig:dist_LGD}
+\end{figure}
+
+
+\bigskip
+
+The distribution of LGD for mortgage-backed loans exhibits a bimodal pattern, with a strong concentration around 0 and 1, indicating that losses are either minimal or total. This bimodality suggests significant disparities in debt recovery, which, in our view, are driven by the quality of guarantees and recovery procedures. This aligns well with the bottom-up approach, where the quality of guarantees  plays a central role in assessing loss risk. Additionally, we observe that the gradual decline between these two poles reflects intermediate variability, albeit less frequent.
+
+\subsubsection{Descriptive statistics of explanatory variables}
+\label{sec:desc_bottom_up}
+Given the inherent complexity of Loss Given Default (LGD), it is important to highlight that it results from a combination of heterogeneous factors. In particular, LGD is influenced by : borrower characteristics (financial profile, behavior, industry sector), contract characteristics (presence and nature of guarantees, quality of the financed asset) or macroeconomic factors.
+
+% \begin{itemize}
+%   \item Borrower characteristics (financial profile, behavior, industry sector);
+%   \item Contract characteristics (presence and nature of guarantees, quality of the financed asset);
+%   \item Macroeconomic factors.
+% \end{itemize}
+
+In line with our study’s framework and the available data, we selected five explanatory variables likely to significantly influence LGD, for which we provide a descriptive analysis.
+
+\begin{itemize}
+  \item Updated LTV: it measures the level of outstanding debt relative to the current value of the property. A high ratio limits recovery capacity in case of default.
+  \item Borrower's age: it reflects the risk profile. Younger borrowers may have less stable financial situations, while older ones may face declining future income.
+  \item Risk rating: it evaluates the borrower’s quality at the time of loan origination and may signal financial fragility or risky behavior.
+  \item Borrower’s income:  it provides a general indication of the borrower's financial situation.
+  \item Property condition: it reflects the physical quality of the mortgaged asset. Poor condition lowers resale value and increases potential loss severity.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{images/Stat_desc_Buttom-up/boxplot.png}
+    \caption{Exploratory analysis of some quantitatives variables}
+    \label{fig:boxplots}
+\end{figure}
+
+The exploratory analysis of the selected explanatory variables reveals significant disparities that may influence LGD.
+The distribution of updated LTV is right-skewed, with a concentration of values above 0.7, indicating a high credit exposure relative to the value of the mortgaged property, while lower values suggest cases where the guarantee largely covers the outstanding loan. 
+
+Regarding borrowers' age, the median age is approximately equal to the mean, suggesting a symmetric distribution centred around 40 years. However, some older borrowers appear as extreme values, which could impact their financial stability.
+%Borrowers' age is generally symmetric around 40 years, although some older borrowers appear as extreme values, which could affect their financial stability.
+Furthermore, the risk rating is highly concentrated around low values, indicating a predominance of moderate-risk profiles, although the presence of a few high-risk borrowers may increase LGD variability.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{images/Stat_desc_Buttom-up/quali_selected.png}
+    \caption{Exploratory analysis of some qualitative variables}
+    \label{fig:quali_var}
+\end{figure}
+\bigskip
+
+Figure \ref{fig:quali_var} provides insights into the qualitative explanatory variables mentioned earlier. The distribution of property condition shows that the majority of real estate assets are classified as old (over 20 years), representing 70\% of the sample. Recent constructions, including New properties and those under Sale in Future State of Completion (VEFA), remain a minority. This structure suggests that mortgage guarantees are primarily backed by older properties, which could impact their resale value in the event of default.
+
+Regarding borrower income, the distribution is skewed toward lower-income groups, with more than 50\% of borrowers earning between 1 and 2 times the minimum wage. Conversely, only 7.8\% of borrowers fall into the high-income category (above 5 times the minimum wage). This concentration within low-to-medium income brackets reflects the financial profile of the sample's borrowers and may influence their repayment capacity as well as LGD variability.
+
+\subsection{Bivariate descriptive statistics}
+
+To begin the bivariate analysis, we started with the most basic yet insightful tool: the scatter plot (see figure \ref{scatter_plot}). While simple, it remains a powerful exploratory method, as it allows for a visual assessment of the shape, strength, and direction of the relationship between two variables. To complement this graphical approach, we then examined the Pearson correlation matrix (see figure \ref{pearson}) to identify variables that are linearly related to our variable of interest and to quantify the strength of those linear relationships. This analysis was further extended using the Spearman (see figure \ref{spearman}) correlation matrix, which is better suited to capture monotonic relationships, even when they are not linear.
+\newline
+
+By comparing these matrices, we observe that some variables show a higher correlation in Spearman than in Pearson, indicating that their relationship may be nonlinear. For instance, the variable \texttt{Interest\_rate} has a Pearson correlation of nearly $0$ with \texttt{Realized\_LGD}, but a Spearman correlation of $9\%$, making it one of the variables with the higher correlation with the target. This suggests a non-existent linear component but a strong nonlinear pattern. We can make the same observation with the $Updated\_LTV$ which has a slightly higher Spearman's correlation than Pearson's, which again suggests the presence of rather strong non-linear links between the variables.
+\newline
+
+These considerations led us to consider models that would be able to capture these complex relationships, which a linear regression would find difficult to achieve. \textbf{Thus, Random Forest is an interesting alternative.}
+
+% \begin{itemize}
+%     \item 
+% \end{itemize}
+
+% \textcolor{red}{Cette section est pauvre en commentaires... -Cheryl}
+
+% \textcolor{red}{stP Mathis, mets les variables que tu as retenues pour ton RF ici}
+
+
+
+
+
+
+
+
+\section{ LGD estimation models}\label{lgd_models_bu}
+
+\textbf{Unlike the Top-Down approach, variables do not need to be stationary}. Indeed, in the Bottom-Up approach, we work with cross-sectional data rather than time-series data as in the previous approach. 
+
+% Machine learning and econometrics models are essential to estimate LGD . In fact, these models provide the link between the LGD and the climate-related stress factors.
+%This section introduces LGD estimation models, which serve as the foundation for quantifying LGD. 
+%These models provide the real LGD predictions that will later be adjusted to reflect climate-related stress factors.
+
+
+% In the subsequent sections, we will present two models that are applied to integrate climate risk by incorporating scenario-specific stressed Loan-To-Value (LTV) ratios : the linear regression with stepwise variables selection presented in the previous chapter (see section \ref{linear_reg}), and the random forest model, which is a machine learning model.
+
+% Furthermore, to assess the model's performance, the dataset was split into a training set (80\%) and a test set (20\%), prior to estimating the model. We note that on each dataset, the LGD presents the same distribution (appendix \ref{fig:strat_ech}).
+
+% For transition risk, we use NGFS climate transition scenarios to evaluate the depreciation of real estate assets, while for physical risk, LTV adjustments are based on flood damage percentages associated with return periods.
+% Je le déplace en dessous
+
+
+% \textcolor{red}{Note à moi : je me demande s'il faut redéfinir les modèle de "simple linear regressio" et le modèle de "RF", car je pense qu'il seront déja définie avant respectivement dans l'approche Top down et l'approche Bootom up-risque d'inondation}
+
+% \textcolor{red}{essai}
+Machine learning and econometric models are essential for estimating LGD. These models establish the link between LGD and climate-related stress factors.
+
+In the following sections, we present two models used to integrate climate risk by incorporating scenario-specific stressed Loan-to-Value (LTV) ratios: (i) the linear regression model with stepwise variable selection, presented in the previous chapter (see section \ref{linear_reg}), and (ii) the Random Forest model, a machine learning approach.
+
+To evaluate model performance, the dataset was split into a training set (80\%) and a test set (20\%) prior to estimation. It is worth noting that LGD distributions are consistent across both sets (see appendix~\ref{fig:strat_ech}).
+
+Stepwise selection based on the Akaike Information Criterion (AIC) is an iterative method used to identify the most relevant explanatory variables in a regression model. It combines backward elimination (removing variables that increase the AIC) and forward selection (adding variables that decrease the AIC) to find a parsimonious model that balances complexity and predictive performance.
+
+To select the optimal model, several combinations of variables were tested using the realized LGD as the dependent variable. The final model’s estimated coefficients, standard errors, t-statistics, and p-values are presented in Table~\ref{tab:regression_results}.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{lccccc}
+        \toprule
+        \textbf{Variable} & \textbf{Coef.} & \textbf{Std. Err.} & \textbf{t-stat} & \textbf{P-value} & \textbf{[0.025; 0.975]} \\
+        \midrule
+        Intercept & 0.2055 & 0.027 & 7.718 & 0.000 & [0.153; 0.258] \\
+        LTV\_actualisee & 0.1452 & 0.032 & 4.534 & 0.000 & [0.082; 0.208] \\
+        Montant\_apport & -2.231e-07 & 7.99e-08 & -2.792 & 0.005 & [-3.8e-07; -6.64e-08] \\
+        Montant\_epargne & -1.27e-09 & 4.34e-10 & -2.926 & 0.003 & [-2.12e-09; -4.19e-10] \\
+        Anciennete\_professionnelle & -0.0026 & 0.001 & -2.947 & 0.003 & [-0.004; -0.001] \\
+        \bottomrule
+        \multicolumn{6}{l}{$R^2 = 0.027$, \quad $R^2_{\text{Adj}} = 0.026$, \quad Fisher test (p-value) = $8.57 \times 10^{-15}$} \\
+        \multicolumn{6}{l}{AIC = 1709, \quad BIC = 1738, \quad RMSE = 0.2404} \\
+        \bottomrule
+    \end{tabular}
+    \caption{Regression results after stepwise variable selection}
+    \label{tab:regression_results}
+\end{table}
+
+
+
+
+
+
+
+The low $R^2$ value (2.7\%) indicates that the model explains only a small proportion of LGD variability, suggesting the possible omission of relevant explanatory factors or the presence of non-linear relationships that the linear model cannot capture. Although some variables are not individually significant (i.e., p-value > 0.05), the overall model is statistically significant according to the Fisher test. This implies that the selected set of variables, when considered together, contributes meaningfully to explaining the variation in LGD.
+
+To evaluate the reliability of the model, we conducted several diagnostic tests, summarized in Table~\ref{tab:diag_test_bu}.
+
+
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{lc}
+    \toprule
+    Tests & Results \\
+    \hline
+    Durbin-Watson & 2.035 \\
+    Max VIF & 1.7521 \\
+    Breusch-Pagan (P-value) & $0.00$ \\
+    Shapiro-Wilk (P-value) & $0.00$ \\
+    Jarque Bera (P-value) & $2.35\times 10^{-130}$ \\
+    \bottomrule
+    \end{tabular}
+    \caption{Diagnostic tests of the OLS stepwise model - Bottom up}
+        \label{tab:diag_test_bu}
+
+\end{table}
+
+As we can see from this diagnostic table, one of the key assumptions of linear regression is violated: the homoscedasticity of the residuals. This means that the variance of the residuals is not constant across observations, indicating heteroscedasticity. As a result, the standard errors of the regression coefficients may be biased, leading to inefficient estimates and potentially unreliable statistical inference. In fact, one of the key challenges in modeling LGD with linear regression is the presence of significant exogenous factors that influence its realization. In our dataset, LGD is largely driven by external elements such as debt collection policies, regulatory changes, and macroeconomic conditions, which are beyond the control of the borrowers. As a result, the realized LGD can be expressed as :
+
+\begin{equation}
+    y^* = y + \epsilon,
+\end{equation}
+
+where $y^*$ represents the observed LGD, $y$ is the theoretical LGD explained by the model, and $\epsilon$ captures the noise component, reflecting the influence of uncontrolled external factors.
+Given that $\epsilon$ accounts for a substantial portion of the variability in LGD, the model can only explain a limited fraction of $y^*$. This is reflected in the low $R^2$ value (2.7\%), suggesting that while the selected explanatory variables contribute to the model, a large share of the variance remains unexplained. Consequently, the predictive power of the regression is constrained by this noisiness, which makes it difficult to interpret the coefficients of the model. 
+\newline
+
+Given the limitations of the linear regression model in capturing complex relationships and mitigating the impact of noise, we explore an alternative approach using a Random Forest model. This ensemble learning method allows for a more flexible representation of non-linear interactions while potentially reducing variance.
+
+\subsection{Random forest model}
+
+The Random Forest (RF) model is an ensemble learning technique that combines multiple decision trees to improve predictive accuracy and robustness. Unlike linear regression, it effectively captures non-linear relationships and handles high-dimensional data efficiently. We trained this model using all quantitative variables.
+
+In order to avoid overfitting, we optimized the hyperparameters using GridSearch. By tuning these hyperparameters, we can control the complexity of the model. For instance, limiting the maximum depth of trees or increasing the minimum number of samples required to split a node prevents the model from becoming too complex and fitting noise in the training data. Additionally, GridSearch employs cross-validation during the optimization process, which further mitigates overfitting by evaluating the model's performance on multiple subsets of the training data. This approach ensures that the selected hyperparameters are robust and not tailored to a specific subset of the data.
+
+% To train the model, the dataset was split into 80\% training and 20\% testing samples. The model was fitted on the training data, then evaluated on the test set using standard performance metrics.
+
+When assessing the performance of the estimated model, we observe an improvement compared to the OLS stepwise model. However, the model’s low $R^2$ on the test set (0.1014) — though its relevance for a Random Forest model may be limited — suggests that LGD variability is only partially explained. This could indicate the presence of non-linearities or missing risk factors. Nevertheless, the relatively low RMSE and MAE values suggest that the model remains useful for ranking risk levels (see table \ref{tab:model_metrics}).
+
+\begin{table}[H]
+    \centering
+    
+    \label{tab:model_metrics}
+    \begin{tabular}{lcc}
+        \toprule
+        Metrics & Train & Test \\
+        \hline
+        RMSE & 0.0289 & 0.0981 \\
+        MAE & 0.1360 & 0.2543 \\ \hline
+
+    \end{tabular}
+    \caption{RF model performance}
+\end{table}
+
+Although we performed hyperparameter optimization using GridSearch to mitigate overfitting, the model still exhibits signs of overfitting, as evidenced by the significant gap between the train and test performance metrics. That said, the overfitting is less severe than with the default RF parameters, demonstrating that GridSearch helped achieve a better balance between bias and variance.
+
+Additionally, we conducted a feature importance analysis to identify the most influential variables in predicting LGD. The importance of each variable was calculated using the Mean Decrease in Impurity method, which measures the contribution of each feature to the reduction in impurity across all trees in the Random Forest. Graphic \ref{fig:importance_rf} summarizes the ranking of variable importance. As we can see, the most influential variables include "LTV\_actualisee", "Property price per square meter", and "Debt-to-income ratio", highlighting the importance of credit exposure and property valuation in LGD estimation. Furthermore, LTV emerges as a key driver, which aligns with our objective of stressing LGD through LTV. The same result is observed using SHAP values (appendix \ref{fig:shap_rf}).If this variable were not a significant predictor of the target, the stress-testing exercise would lack effectiveness. This analysis confirms that LTV is a critical factor in explaining LGD variability, ensuring the validity of our stress-testing approach.
+
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/bottom-up/importance_RF.png}
+    \caption{Importance of variables with RF model}
+    \label{fig:importance_rf}
+\end{figure}
+
+
+
+
+Given the performance of the Random Forest model compared to the stepwise linear regression, \textbf{this model will be used primarily for stressed LGD estimates.} For transition risk, we rely on NGFS climate transition scenarios to assess the depreciation of real estate assets. In the case of physical risk, LTV adjustments are based on flood damage percentages associated with specified return periods.
+
+
+\section{Integration of physical risk}
+
+A key driver of climate-related risk is physical risk, which stems from the increasing frequency and severity of natural disasters due to climate change. In this report, we focus on the impact of floods on LGD. Specifically, we assess how exposure to flood-prone areas affects the recovery rate by incorporating geospatial flood risk data into our analysis. Properties located in high-risk flood zones are identified using flood hazard maps provided by the European Commission, through the LISFLOOD model.
+
+\subsection{Theorical framework : LISFLOOD model}
+
+The flood maps used in this analysis are derived from the LISFLOOD hydrodynamic model. This model generates flood depth maps associated with riverine floods of varying intensities, corresponding to return periods of 10, 20, 50, 100, and 500 years across European countries, and accessible via the European Commission's website. The flood maps are then used to assess the impact of flooding on assets, with the return periods serving as indicators of flood severity.
+
+The production of flood maps for a specific territory involves four key steps:
+
+\begin{enumerate}
+    \item Delineation of watersheds: A watershed, or drainage basin, is a geographical area defined by natural boundaries (ridges) where all water flows to a single outlet. Watersheds are delineated using Digital Elevation Models and GIS software like QGIS.
+    \item Estimation of a hydrological model: Hydrological models, or rainfall-runoff models, predict river discharge based on climatic data such as precipitation, temperature, and evapotranspiration. These models convert time series of climatic data into discharge series.
+    \item Frequency analysis of river discharges: This step involves modelling the distribution of maximum observed discharges over a long period to estimate extreme events, such as a 100-year flood. The Peaks Over Threshold (POT) approach, based on Extreme Value Theory(EVT), is commonly used for this purpose. The POT approach identifies events where the discharge exceeds a certain threshold and models their occurrence using a Poisson process.
+    \item  Implementation of a hydraulic model: Hydraulic models simulate water flow in river systems and floodplains using physical equations, such as the Saint-Venant equations. These models convert discharge data into flood depth maps. The LISFLOOD model uses the CA2D hydraulic model to generate flood maps with a spatial resolution of approximately 90 meters.
+\end{enumerate}
+
+Damage functions, which link flood depth to asset damage, are applied to estimate the economic impact of floods. These functions are typically based on historical data and expert assessments. For this analysis, the damage functions recommended by \textcite{huizinga2017global} are used, as they are widely accepted by regulators such as the European Central Bank (ECB).
+
+To estimate flood damage on these assets, that particular damage function is used, which relates the flood depth and the height of the building to the expected level of damage. The damage ratio indicates the percentage of the building's value that will be lost due to flooding. The damage function for a typical individual (residential building) and professional (commercial) building is described in the table \ref{tab:damage_function}.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{c|ccc}
+\toprule
+\textbf{Flood height (meters)} & \multicolumn{2}{c}{\textbf{Damage Ratio}} \\
+\cmidrule(lr){2-4}
+ & & \textbf{Residential} & \textbf{Commercial} \\
+\midrule
+0.0 & & 0\% & 0\% \\
+0.5 & & 25\% & 15\% \\
+1.0 & & 40\% & 30\% \\
+1.5 & & 50\% & 45\% \\
+2.0 & & 60\% & 55\% \\
+3.0 & & 75\% & 75\% \\
+4.0 & & 85\% & 90\% \\
+5.0 & & 95\% & 100\% \\
+6.0 & & 100\% & 100\% \\
+\bottomrule
+\end{tabular}
+\caption{Damage function for residential and commercial buildings}
+\label{tab:damage_function}
+\end{table}
+
+This table provides a linear relationship between flood depth and damage. For a given flood height, we can calculate the expected damage as a percentage of the property’s value. For instance, if the flood height is 1.5 meters and the building is taller than 6 meters, the damage ratio would be 50\% for residential buildings and 45\% for commercial buildings.
+
+The damage function for commercial buildings is slightly adjusted compared to residential ones, as commercial properties may have different structural resilience.
+
+The rules for applying the damage function are as follows:
+
+\begin{itemize}
+    \item For buildings taller than 6 meters, the damage function remains unchanged. This is based on the assumption that taller buildings are more resilient, and flooding above 6 meters will cause the same damage regardless of their specific height.
+
+    \item For buildings shorter than 6 meters, the damage function is adjusted to reflect their increased vulnerability to flooding. The flood depths in the damage table are scaled down proportionally to the building's height relative to the reference height of 6 meters. This adjustment ensures that shorter buildings, which are more significantly affected by floodwaters due to their reduced capacity to withstand submersion, are accurately represented in the damage assessment.
+
+    Specifically, the flood depths in the damage table are multiplied by the ratio of the building height to 6 meters. For example, a building that is 2 meters tall will use flood depths equal to one-third of those in the original table. A flood depth of 1 meter in the original table is treated as approximately 0.33 meters for this building. This means that a 1-meter flood will cause 75\% damage for a building of this height, while it would cause only 40\% damage for a 6-meter building.
+
+    \item Finally, the damage ratio is determined by comparing the flood height to the values provided in the damage table, which lists flood heights in meters and corresponding damage ratios as percentages. If the flood height falls between two values in the table, linear interpolation is applied to estimate the damage ratio.
+\end{itemize}
+
+This adjustment ensures that the vulnerability of shorter buildings is accurately captured, as even relatively small flood depths can have a significant impact on their structural integrity and functionality. Shorter buildings are more vulnerable to flooding because floodwaters can submerge a larger proportion of their structure.
+
+This help stressed the LTV using flood damage data. The stressed LTV is defined as :  
+
+$$
+LTV_i^s = LTV \times \frac{1}{1 - D_i^s},
+$$
+
+where $D_i^s$ represents the damage percentage for asset $i$ under scenario $s$, which in our case corresponds to different return periods.
+
+% The damage ratio indicates the percentage of the building's value that will be lost due to flooding. The damage function for a typical individual (residential building) and professional (commercial) building is described in the table \ref{tab:damage_function}, which provides a linear relationship between flood depth and damage.
+
+% \begin{table}[H]
+% \centering
+% \begin{tabular}{c|ccc}
+% \toprule
+% \textbf{Flood height (meters)} & \multicolumn{2}{c}{\textbf{Damage Ratio}} \\
+% \cmidrule(lr){2-4}
+%  & & \textbf{Residential} & \textbf{Commercial} \\
+% \midrule
+% 0.0 & & 0\% & 0\% \\
+% 0.5 & & 25\% & 15\% \\
+% 1.0 & & 40\% & 30\% \\
+% 1.5 & & 50\% & 45\% \\
+% 2.0 & & 60\% & 55\% \\
+% 3.0 & & 75\% & 75\% \\
+% 4.0 & & 85\% & 90\% \\
+% 5.0 & & 95\% & 100\% \\
+% 6.0 & & 100\% & 100\% \\
+% \bottomrule
+% \end{tabular}
+% \caption{Damage function for residential and commercial buildings}
+% \label{tab:damage_function}
+% \end{table}
+
+% For a given flood height, we can calculate the expected damage as a percentage of the property’s value. For instance, if the flood height is 1.5 meters and the building is taller than 6 meters, the damage ratio would be 50\% for residential buildings and 45\% for commercial buildings.
+
+% The damage function for commercial buildings is slightly adjusted compared to residential ones, as commercial properties may have different structural resilience.
+
+% The rules for applying the damage function are as follows:
+
+% \begin{itemize}
+%     \item For buildings taller than 6 meters, the damage function remains unchanged. This is based on the assumption that taller buildings are more resilient, and flooding above 6 meters will cause the same damage regardless of their specific height.
+
+%     \item For buildings shorter than 6 meters, the damage function is adjusted to reflect their increased vulnerability to flooding. The flood depths in the damage table are scaled down proportionally to the building's height relative to the reference height of 6 meters. This adjustment ensures that shorter buildings, which are more significantly affected by floodwaters due to their reduced capacity to withstand submersion, are accurately represented in the damage assessment.
+
+%     Specifically, the flood depths in the damage table are multiplied by the ratio of the building height to 6 meters. For example, a building that is 2 meters tall will use flood depths equal to one-third of those in the original table. A flood depth of 1 meter in the original table is treated as approximately 0.33 meters for this building. This means that a 1-meter flood will cause 75\% damage for a building of this height, while it would cause only 40\% damage for a 6-meter building.
+
+%     \item Finally, the damage ratio is determined by comparing the flood height to the values provided in the damage table, which lists flood heights in meters and corresponding damage ratios as percentages. If the flood height falls between two values in the table, linear interpolation is applied to estimate the damage ratio.
+% \end{itemize}
+
+% This adjustment ensures that the vulnerability of shorter buildings is accurately captured, as even relatively small flood depths can have a significant impact on their structural integrity and functionality. Shorter buildings are more vulnerable to flooding because floodwaters can submerge a larger proportion of their structure.
+
+% Using those damage functions, one is able to estimate the Expected Annual Risk (EAR).
+% This metric represents the sum of damages caused by all flood events, regardless of their magnitude, weighted by their annual probability of occurrence. It provides a comprehensive measure of the expected annual impact of flooding on a given asset.  
+%The EAR for an asset $ i $ is defined as:  
+
+% \[
+% EAR_i = \int_{0}^{1} D_i(p) p \, dp
+% \]
+
+% In practice, for each asset, we determine under which scenario(s) it is exposed to flooding. Since for the scenarios where flooding occurs we have the corresponding damage values in euros, we can compute the EAR by calculating the area under the different trapezoids.  
+% \begin{itemize}
+%     \item If there are no data points, the EAR is equal to zero.  
+%     \item If there is only one data point, we assume the annual risk is null. Mathematically, this is justified since the area under a single data point is zero.  
+%     \item Otherwise, we sum the areas of the trapezoids. For each scenario, we have a damage value (in euros) for each asset across different scenarios, allowing us to approximate the integral using trapezoidal sums.  
+% \end{itemize}
+
+% When risk measures are available for a limited number of return periods ($T_k$, with $ k = 1, \dots, n $), we approximate the EAR integral using a discrete sum with the trapezoidal method \textcite{bilskie2022future} :  
+
+% \[
+% EAR_i \approx \frac{1}{2} \sum_{k=1}^{n} \left( \frac{1}{T_k} - \frac{1}{T_{k+1}} \right) \left( D_i(T_k) + D_i(T_{k+1}) \right) = \frac{1}{2} \sum_{k=1}^{n} \left( p_k - p_{k+1} \right) \left( D_i(p_k) + D_i(p_{k+1}) \right).
+% \]
+%come back
+
+
+\paragraph*{\underline{Focus on the frequency analysis of river discharges}}
+The frequency analysis of river discharges is a critical step in flood risk assessment. The POT method is employed to model extreme flood events. This method involves selecting a threshold $S$ and analyzing the occurrences of discharges that exceed this threshold. The process of exceedance is modelled through a Poisson process, where the number of exceedances in a given time period follows a Poisson distribution. The probability mass function of a homogeneous Poisson process is given by:
+$$
+P(m_S(t) = k) = \frac{e^{-\mu_S t} (\mu_S t)^k}{k!},
+$$
+
+where $\mu_S$ is the intensity parameter representing the expected number of exceedances per unit time. This parameter can be estimated using the maximum likelihood method or the method of moments. Thus, $\hat{\mu}_S = \frac{NV}{NA}$,
+where $NV$ is the total number of exceedances observed over $NA$ years of data.
+
+The time between exceedances, denoted $\theta_S$, follows an exponential distribution with the survival function:
+
+\[
+S(t) = P(\theta_S > t) = e^{-\mu_S t}.
+\]
+
+The return period $T(S)$, which is the average time between exceedances of the threshold $S$, is given by:
+
+\[
+T(S) = E(\theta_S) = \frac{1}{\mu_S}.
+\]
+
+As the threshold $S$ increases, the return period $T(S)$ also increases, reflecting the rarity of more extreme events. However, increasing the threshold reduces the sample size, leading to less precise estimates of the return period. To address this, a statistical distribution $G(y | S)$ is fitted to the exceedances. Commonly used distributions include the exponential, generalized Pareto, and Gumbel distributions. In the LISFLOOD model, the Gumbel distribution is used to model the annual maximum discharges.
+
+The relationship between the return period $T(y)$ and the discharge $y$ is given by:
+
+\[
+G(y | S) = 1 - \frac{1}{\mu_S \times T(y)}.
+\]
+
+By solving this equation, the discharge $y$ corresponding to any return period $T$ can be estimated:
+
+\[
+y(T) = y_0 + a \ln(T),
+\]
+
+where $y_0 = S + a \ln(\mu_S)$ and $a$ is a scale parameter estimated from the data.
+
+Once the discharge values for different return periods are estimated, the next step is to convert these discharges into flood depth maps. This is achieved using hydraulic models, which simulate the flow of water in river systems and floodplains. The LISFLOOD model employs the Saint-Venant equations, a set of partial differential equations derived from the principles of fluid mechanics, to model the propagation of floodwaters.
+
+
+\subsection{Analyses and results of climate risk impact}
+\subsubsection{Flood map characteristics and identification of flood-exposed assets}
+
+% After modelling the LGD using the Bottom-Up approach, a damage function was computed for each scenario to stress the LGD based on specific flood events. 
+
+In order to stress LGD based on specific flood events, we processed the flood depth raster files for different return periods provided by the LISFLOOD model: 10, 20, 30, 40, 50, 75, 100, 200, 500. For example, a return period of 10 %in the first case, it 
+represents the intensity of the floods if we expect them, on average, every 10 years. As the original dataset covers the entire European region, it was necessary to extract the portion corresponding specifically to France. This was achieved by applying a spatial mask to the raster files using a shapefile of France, thereby ensuring that only the relevant geographic data was retained.\\
+
+As expected, the median and mean flood depth increase with higher return periods (see figure \ref{fig:evolution_flood_depth}), which is logical since extreme flood events are associated with greater water depths. However, the difference between the highest and lowest return periods remains relatively small in terms of the median—around 0.5 meters. The impact of return periods is particularly evident in the increasing number of outliers, rising from 1,300,000 to 2,800,000, indicating that such events are becoming significantly more devastating than before, which aligns with our expectations. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/bottom-up/evolution_of_flood_depth_stats.png}
+    \caption{Evolution of mean, median, and outliers above upper whisker over return periods}
+    \label{fig:evolution_flood_depth}
+\end{figure}
+
+
+The next step involves identifying flood-exposed assets. The number of affected assets is analyzed for each return period. As expected, the number of exposed assets increases with longer return periods, reflecting the expansion of flood-prone areas. To illustrate this, maps corresponding to the smallest and largest return periods can be displayed, showing the differences in flood extent and the associated impact on assets (see Figure~\ref{fig:cartes_comparaison}).  
+
+The number of flooded assets increases from 398 for a 10-year return period to 460 for 20 years, 479 for 30 years, and 508 for 40 years. This trend continues, reaching 517 for 50 years, 540 for 75 years, 557 for 100 years, 594 for 200 years, and finally 651 for a 500-year return period. This confirms that longer return periods lead to a greater number of affected assets.  On the dataset considered in this part, the figures are significantly lower, with only 131 assets affected for a 10-year return period and 229 for a 500-year return period. This indicates that the assets in the portfolio considered in the Bottom-Up approach are much less impacted compared to the entire portfolio, as the numbers are more than halved.
+
+\begin{figure}[H]
+    \centering
+    % Première carte (RP 10 ans)
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/bottom-up/Flood_Map_RP10.png}
+    \end{minipage}
+    \hfill
+    % Deuxième carte (RP 500 ans)
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{images/bottom-up/Flood_Map_RP500.png}
+    \end{minipage}
+
+    \caption{Maps of flood-exposed assets under the 2 extreme scenarios considering the entire portfolio}
+    \label{fig:cartes_comparaison}
+\end{figure}
+
+
+\subsubsection{Damages assessed on our portfolio}
+
+To model the impact of physical risk on the LGD using the Bottom-Up approach, a damage function was computed for each scenario to stress the LGD based on specific flood events.
+
+Once the appropriate damage ratio is identified based on the flood depth and building type, the total damage can be calculated by multiplying the damage ratio by the value of the property. The value of the property is determined by the building’s surface proxy area multiplied by the price per square meter. Then, having the damage function and the value of the building, we have been able to calculate the damages in euros a building could face given a specific scenario. We observe the distribution of the damages for the two extreme scenarios in figure \ref{fig:damages_percentage}
+
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[b]{0.48\textwidth} % 48% de la largeur du texte
+    \centering
+    \includegraphics[width=\textwidth]{images/barplot_dommages_10.png}
+\end{subfigure}
+\hfill % Espace horizontal entre les images
+\begin{subfigure}[b]{0.48\textwidth} % 48% de la largeur du texte
+    \centering
+    \includegraphics[width=\textwidth]{images/barplot_dommages_500.png}
+\end{subfigure}
+\caption{Distribution of damage in \% for the two extreme scenarios.}
+\label{fig:damages_percentage}
+\end{figure}
+
+The distribution of damage percentages for the two extreme scenarios reveals a clear escalation in severity with longer return periods. For the 10-year scenario, damage is predominantly concentrated in the lower range (20\% to 60\%), indicating moderate impacts. In contrast, the 500-year scenario shows a significant shift toward higher damage percentages (80\% to 100\%). Assets already in flood-prone areas for the 10-year scenario are likely to experience much more severe damage, while previously unaffected assets become exposed to flooding, with varying degrees of intensity.
+
+%Finally, the estimation of Expected Annual Risk (EAR) is performed. The EAR for an asset $ i $ is defined as:  
+
+%\[
+%EAR_i = \int_{0}^{1} D_i(p) p \, dp
+%\]
+
+%This metric represents the sum of damages caused by all flood events, regardless of their magnitude, weighted by their annual probability of occurrence. It provides a comprehensive measure of the expected annual impact of flooding on a given asset.  
+
+%In practice, for each asset, we determine under which scenario(s) it is exposed to flooding. Since for the scenarios where flooding occurs we have the corresponding damage values in euros, we can compute the EAR by calculating the area under the different trapezoids.  
+%- If there are no data points, the EAR is equal to zero.  
+%- If there is only one data point, we assume the annual risk is null. Mathematically, this is justified since the area under a single data point is zero.  
+%- Otherwise, we sum the areas of the trapezoids. For each scenario, we have a damage value (in euros) for each asset across different scenarios, allowing us to approximate the integral using trapezoidal sums.  
+
+%When risk measures are available for a limited number of return periods ($T_k$, with $ k = 1, \dots, n $), we approximate the EAR integral using a discrete sum with the trapezoidal method \textcite{bilskie2022future} :  
+
+%\[
+%EAR_i \approx \frac{1}{2} \sum_{k=1}^{n} \left( \frac{1}%{T_k} - \frac{1}{T_{k+1}} \right) \left( D_i(T_k) + D_i(T_{k+1}) \right) = \frac{1}{2} \sum_{k=1}^{n} \left( p_k - p_{k+1} \right) \left( D_i(p_k) + D_i(p_{k+1}) \right).
+%\]
+
+
+
+
+
+\subsubsection{Stressed LGD for physical risk}
+
+% First, we need to compute the stressed LTV using flood damage data. Then, we leverage the results from the previous section. The stressed LTV is defined as:  
+
+% $$
+% LTV_i^s = LTV \times \frac{1}{1 - D_i^s}
+% $$
+
+% where $ D_i^s $ represents the damage percentage for asset $ i $ under scenario $ s $, which in our case corresponds to different return periods.
+To ensure realistic values, we cap the LTV at 1. This adjustment is necessary because, as observed in the previous section, many assets experience damage percentages close to 100\%, which would otherwise result in LTV values approaching infinity.
+
+
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[b]{0.48\textwidth} % 48% de la largeur du texte
+    \centering
+    \includegraphics[width=\textwidth]{images/bottom-up/inondation/stressed_ltv_10.png}
+\end{subfigure}
+\hfill % Espace horizontal entre les images
+\begin{subfigure}[b]{0.48\textwidth} % 48% de la largeur du texte
+    \centering
+    \includegraphics[width=\textwidth]{images/bottom-up/inondation/stressed_ltv_500.png}
+\end{subfigure}
+\caption{Distribution of stressed LTV for the two extreme scenarios.}
+\label{fig:stressed_ltv}
+\end{figure}
+
+We observe that a significant portion of the LTV values reach the upper limit of 1. However, this is not universal across all assets in the first scenario (10-year return period), as some remain below this threshold. In contrast, for the second scenario (500-year return period), the proportion of assets with LTV values at 1 is considerably higher. This is consistent with the higher damage levels observed in more extreme scenarios, where flood impacts are more severe.
+
+Once the stressed LTV is computed, we can proceed with the calculation of the stressed LGD. The process is as follows: for each scenario, we make predictions using our best model, replacing the LTV with the stressed LTV. Thus, we obtain LGD predictions for each scenario. 
+
+For each scenario, the stressed LGD statistics are computed. We can find key statistics (median, mean, Q1, Q3, and D1) for each scenario in table \ref{tab:stressed_lgd}.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Scenario} & \textbf{Median LGD} & \textbf{Mean LGD} & \textbf{Q1} & \textbf{Q3} & \textbf{D1} \\
+\midrule
+Baseline & 0.2409 & 0.2891 & 0.1681 & 0.3625 & 0.1165 \\
+10 & 0.2709 & 0.3005 & 0.2055 & 0.3642 & 0.1519 \\
+20 & 0.2711 & 0.3005 & 0.2055 & 0.3644 & 0.1518 \\
+30 & 0.2711 & 0.3007 & 0.2061 & 0.3644 & 0.1519 \\
+40 & 0.2712 & 0.3006 & 0.2057 & 0.3644 & 0.1518 \\
+50 & 0.2711 & 0.3006 & 0.2061 & 0.3641 & 0.1518 \\
+75 & 0.2712 & 0.3007 & 0.2061 & 0.3642 & 0.1518 \\
+100 & 0.2713 & 0.3008 & 0.2061 & 0.3642 & 0.1519 \\
+200 & 0.2713 & 0.3008 & 0.2062 & 0.3644 & 0.1519 \\
+500 & 0.2713 & 0.3008 & 0.2061 & 0.3642 & 0.1523 \\
+\bottomrule
+\end{tabular}
+\caption{Stressed LGD statistics by scenario}
+\label{tab:stressed_lgd}
+\end{table}
+
+
+The median and mean LGD values increase slightly under stress scenarios compared to the baseline, indicating a higher expected loss given default under flood risk. However, the impact is relatively modest. The first quartile and first decile also increase under stress scenarios, suggesting that even the lower tail of the LGD distribution is affected by flood risk, though the changes remain limited. However, the third quartile remains relatively stable across scenarios, indicating that the upper tail of the LGD distribution is less sensitive to flood risk.
+
+
+The relatively small impact of flood risk on LGD can be attributed to the fact that the baseline LTV values are already very high (median close to 0,8, section \ref{sec:desc_bottom_up}). When stressed LTVs are close to or equal to 100\%, the additional stress from flood damage has a limited effect on the overall LGD, as the collateral value is already insufficient to cover the loan amount. In other words, the marginal impact of further increasing LTV through flood damage is reduced when the starting LTV is already elevated.
+
+While LTV is the main driver of our model, its impact here is limited due to the characteristics of the portfolio. This can be explained by the high baseline values, which are themselves a result of working with a portfolio of defaulted assets. Additionally, the model's performance was poor; MAE and RMSE were high, indicating that variability was not well captured from the outset. Nevertheless, we observe that LGD increases between the baseline and stressed scenarios, which is encouraging. In summary, a more impactful stress-testing methodology would be needed to concretely assess the effects of flooding on LGD.
+
+
+
+
+
+
+
+
+
+
+\section{Integration of transition risk}
+% \textcolor{red}{Pour rédiger cette partie, je me suis basée sur la dernière note du professeur. Une fois le code finalisé, nous la réviserons pour qu'elle soit compatible avec celui-ci}
+The objective of this section is to examine the Bottom-Up climate stress-testing methodology applied to transition risk and its impact on mortgage credit Loss Given Default (LGD), using the Loan-To-Value (LTV) ratio as the transmission channel.
+
+Transition risk refers to the economic losses resulting from the transition to a low-carbon economy. The real estate sector is particularly vulnerable to asset depreciation, primarily due to increasingly stringent energy efficiency regulations and rising energy costs.
+
+Residential and commercial buildings account for approximately 9\% of total greenhouse gas (GHG) emissions in the European Union, mainly due to their energy consumption according to \textcite{sopgoui2024modeling}. In response, several policy measures have been introduced to improve energy efficiency. For instance, in France, the 2019 Energy-Climate Law prohibits renting properties with poor energy efficiency ratings (EPCs F and G), directly impacting their market value. 
+Assessing the impact of these measures on real estate has therefore become essential for banks in order to quantify potential losses.
+
+\subsection{Theoritical Framework : Valuation models}
+
+% \paragraph{Transition Risk in the Real Estate Sector}
+% Transition risk refers to the economic losses resulting from the transition to a low-carbon economy. The real estate sector is particularly vulnerable to asset depreciation, primarily due to increasingly stringent energy efficiency regulations and rising energy costs.
+
+% Residential and commercial buildings account for approximately 9\% of total greenhouse gas (GHG) emissions in the European Union, mainly due to their energy consumption according to \textcite{sopgoui2024modeling}. In response, several policy measures have been introduced to improve energy efficiency. For instance, in France, the 2019 Energy-Climate Law prohibits renting properties with poor energy efficiency ratings (EPCs F and G), directly impacting their market value. 
+% \paragraph{Real Estate Valuation Models}
+
+The impact of transition risk on real estate is best understood through valuation models. In fact, Transition risk, driven by regulatory changes and energy efficiency policies, leads to asset devaluation. In the literature, three primary approaches are commonly used to assess the value of real estate assets:
+
+\begin{itemize}
+    \item Sales Comparison Method: The property’s value is estimated based on the sale prices of similar properties in the market.
+    \item Income Approach: The valuation is derived from the discounted sum of future rental income, making it comparable to the valuation of financial assets.
+    \item Cost Approach\footnote{This method is used only when the first two are not applicable}: The property’s value is estimated based on the cost of reconstructing a similar property.
+\end{itemize}
+
+Among these, the sales comparison method is commonly implemented using the hedonic pricing model described by \textcite{rosen1974hedonic}, which represents a property's value as a function of its intrinsic and locational attributes:
+
+\begin{equation*}
+    P_{i,t} = \alpha + \beta \cdot \text{Structure}_{i,t} + \gamma \cdot \text{Neighborhood}_{i,t} + \phi \cdot \text{Distance}_{i,t} + \varepsilon_{i,t},
+\end{equation*}
+
+where $P_{i,t}$ is the price of property $i$ at time $t$, \texttt{Structure} represents structural characteristics (e.g., number of rooms, floor area), \texttt{Neighborhood} captures locational factors (e.g., proximity to public transport), and \texttt{Distance} measures distances to key amenities.
+
+The income approach, on the other hand, is based on the Discounted Cash Flow (DCF) model, which estimates property value based on expected rental income :
+
+\begin{equation*}
+    P_{i,t} = \mathbb{E} \left[ R_{i,t} + \sum_{s=1}^{T} \frac{R_{i,t+s}}{(1 + \tau)^s} \middle| F_t \right],
+\end{equation*}
+
+where $R_{i,t+s}$ is the expected net rental income and $\tau$ is the discount rate, assumed to be constant over time.
+
+\subsubsection{Modeling the impact of transition risk on property values}
+%Transition risk, driven by regulatory changes and energy efficiency policies, leads to asset devaluation.
+
+For assessing the impact of transition risk on real estate , we will use the model of \textcite{ter2021german} based on the assumption that, \textit{"all other things being equal, properties with lower energy efficiency will be sold at a lower price than more energy-efficient homes"}. Indeed, in the long term, these properties are going to cost a lot more, not only in energy costs, but also in possible mandatory renovations in the event of regulatory changes on housing energy expenditure.
+The price differential between an energy-inefficient property (classified as $j$, with $j$ being lower than $A$) and an energy-efficient property ($A$) is given by :
+
+\begin{align*}
+    P^j_t - P^A_t &= - \mathbb{E} \left[ \sum_{h=1}^{T} \frac{(EC^j_{t+h} - EC^A_{t+h})}{(1 + r)^h} \middle| F_t \right], \\
+    &= - \Delta CE^j . \sum_{h=1}^{T} \frac{\mathbb{E} (P^E_{t+h} | F_t)}{(1 + r)^h}
+\end{align*}
+
+where r is the discount factor, $EC^j_{t+h}$ and $EC^A_{t+h}$ are the expected energy costs for properties ranked $j$ and $A$, respectively; $P_t^x$, the estimates property value rated $x$; and $\Delta CE^j = CE^j - CE^A$ captures the difference in energy consumption between properties.
+
+The discount factor $r$ reflects the time preference of economic agents when arbitrating between financing costs and energy savings. It is computed as:
+
+\begin{equation*}
+r = \alpha \cdot i + (1 - \alpha) \cdot g
+\end{equation*}
+
+where $i$ represents the mortgage rate, $\alpha$ is the proportion of debt financing for the property, and $g$ is the expected return on equity, capturing the opportunity cost of invested capital.
+For France, using reasonable estimates $r = 0.8 \times 4\% + 0.2 \times 6\% = 4.4\%$.
+\newline
+
+%\paragraph{Energy Price Trajectories and Discounted Depreciation Model}
+
+Moreover, the expected energy costs are assumed to be proportional to the energy price at time $t$, multiplied by a constant factor representing annual energy consumption per square meter:
+
+\begin{equation*}
+    EC_{t}^{i} = P^E_{t} \cdot CE^i,
+\end{equation*}
+
+where $CE^i$ represents the median energy consumption for a given energy rating $i$ (e.g., EPCs classifications). A table giving the median consumption energy values for each energetic class can be found in Appendices (\ref{tab:DPE_CE}).
+
+Thus, the relative depreciation for a property ranked $j$ under scenario $s^*$ is given by:
+
+\begin{equation*}
+    D^j_t(s^*) = \frac{\Delta P^j_t(s^*)}{P^A_t(s^*)} = - \left( 
+ \frac{\Delta CE^j}{P^A_t(s^*)} \right) \sum_{h=1}^{T} \frac{P^E_{t+h}(s^*)}{(1 + r)^h}
+\end{equation*}
+
+where $P^A_t(s^*)$ represents the average price per square meter of energy-efficient properties, thus those that are ranked A, for the scenario $s^*$. As we are conducting a relative rather than an absolute study, the prices of A-rated properties are calculated directly from the database, on the assumption that for all scenarios, the real estate discount for A-rated is $0$.
+
+% Using expected energy price trajectories, property price depreciation for a considered NGFS scenario $s^*$ is given by:
+
+% \begin{equation*}
+%     \Delta P^j_t(s^*) = - \Delta CE^j \sum_{h=1}^{T} \frac{\mathbb{E} (P^E_{t+h} | F_t)}{(1 + r)^h}
+% \end{equation*}
+
+% where $\Delta CE^j = CE^j - CE^A$ captures the difference in energy consumption between properties.
+
+% Thus, the relative depreciation for a property ranked $j$ under scenario $s^*$ is given by:
+
+% \begin{equation*}
+%     D^j_t(s^*) = \frac{\Delta P^j_t(s^*)}{P^A_t(s^*)} = - \left( 
+%  \frac{\Delta CE^j}{P^A_t(s^*)} \right) \sum_{h=1}^{T} \frac{P^E_{t+h}(s^*)}{(1 + r)^h}
+% \end{equation*}
+
+% Pas clair à le lecture. Peut-être donner plus de détails sur le passage d'une forme à une autre en reprenant les éléments de la note.
+
+% where $P^A_t(s^*)$ represents the average price per square meter of energy-efficient properties, thus those that are ranked A.
+
+%\paragraph{Determination of the Discount Factor}
+% The discount factor $r$ reflects the time preference of economic agents when arbitrating between financing costs and energy savings. It is computed as:
+
+% \begin{equation*}
+% r = \alpha \cdot i + (1 - \alpha) \cdot g
+% \end{equation*}
+
+% where $i$ represents the mortgage rate, $\alpha$ is the proportion of debt financing for the property, and $g$ is the expected return on equity, capturing the opportunity cost of invested capital.
+
+% For France, using reasonable estimates:
+
+% \begin{equation*}
+% r = 0.8 \times 4\% + 0.2 \times 6\% = 4.4\%
+% \end{equation*}
+
+\subsubsection{Energy price calculations}
+The calculation of energy prices $P_E^t$ relies on the assumption that the cost of energy in residential buildings is primarily determined by fossil fuel prices, namely oil and natural gas. In this context, we follow the methodology of \textcite{ter2021german}, which defines the energy price $P^E_t$ as a weighted average of oil and gas prices, converted to a common unit (euro per kWh). Although this method was designed for residential use in Germany, it remains fairly relevant for France due to the way electricity prices are set within the European Union. The price of energy at time $t$ under scenario $s$ is given by:
+
+\begin{equation}
+    P^E_t(s) = \omega_O \cdot P^O_t(s) + \omega_G \cdot P^G_t(s),
+\end{equation}
+
+where $P^O_t(s)$ and $P^G_t(s)$ are the prices of oil and natural gas, respectively, under scenario $s$, $\omega_O$ and $\omega_G$ represent the relative contributions of oil and gas to energy prices.
+\newline
+
+To ensure price comparability, oil and gas prices are converted from their original unit (dollars per barrel of oil equivalent, BOE) into euros per kWh. This requires two conversions:
+\begin{enumerate}
+    \item Currency conversion: The prices are converted from US dollars to euros using the exchange rate $e_t$ at a given time $t$:
+    \begin{equation}
+        P^O_t(s) = P^O_t(s) \cdot e_t, \quad P^G_t(s) = P^G_t(s) \cdot e_t.
+    \end{equation}
+    \item Energy unit conversion: The energy content per BOE is assumed to be $\gamma = 1700$ kWh. Thus, prices are expressed in euros per kWh as follows:
+    \begin{equation}
+        \tilde{P}^O_t(s) = \frac{P^O_t(s) \cdot e_t}{\gamma}, \quad \tilde{P}^G_t(s) = \frac{P^G_t(s) \cdot e_t}{\gamma}.
+    \end{equation}
+\end{enumerate}
+
+Additionally, a carbon tax component is incorporated to reflect the impact of climate policies. The carbon tax $T^{CO_2}_t(s)$ is applied to oil and gas prices based on their respective carbon intensity factors $\kappa_O$ (kgCO$_2$/kWh for oil) and $\kappa_G$ (kgCO$_2$/kWh for gas):
+
+\begin{equation}
+    P^O_t(s) = \tilde{P}^O_t(s) + \kappa_O \cdot \frac{T^{CO_2}_t(s) \cdot e_t}{1000}, \quad 
+    P^G_t(s) = \tilde{P}^G_t(s) + \kappa_G \cdot \frac{T^{CO_2}_t(s) \cdot e_t}{1000}.
+\end{equation}
+\newline
+
+For the French market, the weights $\omega_O = 35\%$ and $\omega_G = 65\%$ are applied, reflecting the relative contributions of oil and gas to residential energy costs, similar to how it was applied in Germany for the reasons mentionned above.
+
+
+
+
+
+
+
+\subsubsection{Impact of transition risk on the Loan-to-Value (LTV) ratio}
+
+To assess the impact of transition risk on mortgage credit LGD, we adjust the LTV ratio based on projected devaluations:
+
+\begin{equation*}
+    \forall j \in \mathscr{N}_{-A}, \quad LTV_{i,j}^{s^*} = LTV_{i,j} \left(\frac{1}{1- D^{j}(s^*)}\right),
+\end{equation*}
+
+where $D^j(s^*)$ represents the relative depreciation of properties under scenario $s^*$ in absolute terms. This adjustment directly affects LGD calculations, as LTV is a key risk drivers in loss estimation.
+
+By integrating transition risk into the LTV framework, this methodology provides a robust framework for stress-testing the impact of climate-related risks on mortgage portfolios.
+
+\subsection{Implementation and results}
+
+% This section will be divided into 3 parts. First, the different methodologies used to obtain the stress parameter in each of the 2 cases will be presented, i.e. the relative real estate discount for the transition risk and the percentage loss of collateral value during a flood for the physical risk, as well as the intermediate results. We will then discuss the construction of bottom-up models for estimating the LGD and the impact of incorporating the stress parameter on the LTV.
+% \newline
+
+% \textcolor{blue}{pour Mathis: ton paramètre de stress Di que tu mets dans la ltv, c'est le RAA ou "le pourcentage de perte
+% de valeur de la garantie lorsque qu’une inondation associée à un scénario s*" ?}
+
+
+
+
+
+
+% \subsection{Calculation of Relative Real Estate Discounts}
+
+The impact of transition risk on real estate values is primarily driven by rising energy prices and increasing regulatory constraints on energy-inefficient properties. As previously established, property depreciation due to escalating energy costs can be modelled as a function of expected energy price trajectories and energy performance classification.
+
+
+\subsubsection{Projected energy price trajectories and real estate devaluation}
+
+The trajectory of energy prices under different NGFS scenarios is illustrated in Figure~\ref{fig:energy_prices}. These projections incorporate the effects of carbon taxation policies, differentiating between scenarios with ambitious decarbonization goals and those with limited policy interventions.
+
+All the scenarios are considered: \textit{Baseline}, \textit{Below 2°C}, \textit{Delayed Transition}, \textit{Nationally Determined Contributions (NDCs)}, and \textit{Net Zero 2050}.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{images/energy_prices.png}
+    \caption{Projected energy price trajectories with carbon tax under NGFS scenarios.}
+    \label{fig:energy_prices}
+\end{figure}
+
+\textit{Net Zero 2050} and \textit{Delayed Transition} scenarios exhibit the steepest increase in energy prices, starting from 2030 until 2050. This can be attributed to the aggressive decarbonization policies and the delayed response leading to a more abrupt price shift. Conversely, the \textit{Baseline} scenario remains relatively stable, reflecting the absence of additional carbon taxes.
+\newline
+
+
+
+% \subsection{Real Estate Devaluation Based on Energy Efficiency}
+
+
+As energy prices increase, properties with poor energy efficiency ratings (e.g., labels E, F, and G) experience a higher discount in market valuation due to increased energy costs. Figures~\ref{fig:real_estate_discount_housing} and \ref{fig:real_estate_discount_appartement} present the projected discount rates for properties (houses and appartments) across energy efficiency classes.
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/bottom-up/appartement depreciation.png}
+        \caption{Appartement devaluation based on energy efficiency labels under NGFS scenarios.}
+        \label{fig:real_estate_discount_appartement}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{images/bottom-up/housing depreciation.png}
+        \caption{Housing devaluation based on energy efficiency labels under NGFS scenarios..}
+        \label{fig:real_estate_discount_housing}
+    \end{minipage}
+\end{figure}
+
+
+% Properties rated as \textit{G} experience up to a \SI{-12}{\percent} discount under the \textit{Net Zero 2050} scenario. In contrast, properties rated \textit{B} or higher show negligible depreciation, emphasizing the importance of energy-efficient buildings in mitigating financial risks.
+
+The results indicate that properties rated as \textit{G} experience a depreciation of up to $-12\%$ under the \textit{Net Zero 2050} scenario. Intermediate efficiency classes (\textit{D, E, F}) also show significant depreciation, but to a lesser extent. Moreover, energy-efficient properties (\textit{A, B}) remain relatively stable in value across all scenarios.
+
+These findings highlight the growing financial risk associated with inefficient buildings in a carbon-constrained economy. 
+\newline
+
+% \subsection{Aggregate Discount Increase in the Housing Market}
+It is also interesting to take a look at the effect of these scenarios on the depreciation of real estate, in average for all energy classes, and also make a comparison between houses and appartments.
+The aggregate effect on real estate valuation across housing types is summarized in Figure~\ref{fig:aggregate_discount}. The discount increase is more pronounced for detached houses compared to apartments, due to higher energy consumption per square meter.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/aggregate_discount.png}
+    \caption{Aggregate discount increase across housing types under different scenarios.}
+    \label{fig:aggregate_discount}
+\end{figure}
+
+The \textit{Net Zero 2050} scenario shows the most severe devaluation, with an average discount exceeding $-4\%$ for houses. Market dynamics suggest that inefficient housing units will become increasingly difficult to finance and sell without improving energy efficiency. 
+
+\subsubsection{Impact of transition risk on Loan-to-Value (LTV) ratios}
+
+The next step of the modelisation is the adjustment of the Loan-to-Value (LTV) ratio which is the key indicator that will allow us measuring the impact of the scenarios on the LGD. Indeed, higher LTV ratios indicate increased leverage, which in turn elevates credit risk exposure. Under climate transition scenarios, properties with lower energy efficiency ratings (e.g., classes E, F, and G) experience a decrease in market value, mechanically increasing their LTV ratios.
+
+To quantify this effect, we adjust the LTV ratios to account for the expected real estate depreciation under different NGFS scenarios by using the formula defined in the previous section.
+\newline
+
+Table~\ref{tab:ltv_stress} presents the distribution of LTV ratios under different NGFS climate transition scenarios. More detailed tables can be found in appendices, giving the LTV ratios by scenario, by housing type and by energy class (tables \ref{ltv_stressed} to \ref{table_scenario_f}%).
+
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{lcccc}
+        \hline
+        \textbf{Scenario} & \textbf{Mean LTV} & \textbf{75th Percentile} & \textbf{90th Percentile} & \textbf{Max LTV} \\
+        \hline
+        Baseline & 0.7267 & 0.8937 & 0.9558 & 1.0378 \\
+        Below 2°C & 0.7324 & 0.9006 & 0.9630 & 1.0636 \\
+        Delayed Transition & 0.7321 & 0.9004 & 0.9628 & 1.0683 \\
+        NDCs & 0.7306 & 0.8985 & 0.9612 & 1.0557 \\
+        Net Zero 2050 & 0.7465 & 0.9178 & 0.9852 & 1.1327 \\
+        \hline
+    \end{tabular}
+    \caption{Impact of transition risk scenarios on LTV distribution.}
+    \label{tab:ltv_stress}
+\end{table}
+
+
+The results indicate that transition risk scenarios lead to a progressive increase in LTV ratios. The \textit{Net Zero 2050} scenario exhibits the highest increase, with a mean LTV reaching 0.77 and a maximum LTV of 1.19, suggesting that some properties would face a substantial devaluation.
+\newline
+
+In all scenarios, at least a fraction of properties experience over-indebtedness, as the 90th percentile LTV exceeds 1.0 in some cases. While the \textit{Baseline} and \textit{NDCs} scenarios show limited variations, more aggressive transition pathways (\textit{Net Zero 2050} and \textit{Below 2°C}) lead to a higher increase in LTV ratios.
+
+
+
+
+
+
+
+\subsubsection{LGD projections under NGFS Scenarios}
+
+In the previous section \ref{lgd_models_bu}, the random forest was selected as the model to stress the LGD. Hence, it is easy to estimate the average LGD under different NGFS climate scenarios. The results are presented in figure ~\ref{fig:lgd_rf}, showing the projected LGD values for each scenario :
+
+% \begin{table}[H]
+%     \centering
+%     \caption{Predicted Average LGD under NGFS Scenarios}
+%     \label{tab:lgd_average}
+%     \begin{tabular}{lc}
+%         \hline
+%         \textbf{Scenario} & \textbf{Predicted Average LGD} \\
+%         \hline
+%         Baseline & 0.2919 \\
+%         Below 2°C & 0.2927 \\
+%         Delayed Transition & 0.2927 \\
+%         Nationally Determined Contributions (NDCs) & 0.2924 \\
+%         Net Zero 2050 & 0.2940 \\
+%         \hline
+%     \end{tabular}
+% \end{table}
+
+We observe that the predicted average LGD increases with the severity of the NGFS scenarios. The highest LGD is observed under the Net Zero 2050 scenario (0.2940), which reflects the economic impact of stringent carbon reduction policies on credit risk. The relatively small differences across scenarios suggest a moderate sensitivity of LGD to transition risks, possibly due to the model’s poor performance indicators, as stated before. The average LGD is approximately 0.29.  
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{images//bottom-up/lgdRF.png}
+    \caption{Predicted Average LGD under different NGFS scenarios using the Random Forest model.}
+    \label{fig:lgd_rf}
+\end{figure}
+
+The low difference between this average predicted LGD and the realized LGD observed in our portfolio can be explained by the model’s performance, which exhibits a relatively low explanatory power.
+\newpage
+
+%\chapter{Conclusion}
+\chapter*{Conclusion}
+\addcontentsline{toc}{chapter}{Conclusion}
+
+
+This project set out to quantify the impact of climate-related shocks on the Loss Given Default (LGD) of a residential mortgage loan portfolio. To achieve this, we adopted a comprehensive methodological framework, combining two complementary approaches to better understand the complex relationship between climate change and credit risk : the top-down approach and the bottom-up approach.\\
+
+We first implemented an indirect, Top-Down approach, which estimates the effect of climate shocks on LGD through their influence on macroeconomic variables—recognized drivers of credit behavior. Within this framework, several PD-LGD dependency models were explored. The structural Merton model was selected for its relatively strong performance (MAPE < 10\%). When applied to NGFS climate scenarios, through the OLS stepwise model, it indicates that the "Delayed transition" scenario results in the highest increase in LGD, while the "Baseline" scenario leads to more limited changes.
+
+This said, this approach is based on models that rely on relatively strong and simplifying assumptions. In particular, they often impose a comonotonic relationship between PD and LGD, meaning both variables are assumed to respond in the same direction to systematic shocks.
+%That said, this approach presents several limitations. On the methodological side, simplifying assumptions—such as log-normal asset value distribution and constant volatility—constrain the model's ability to fully capture LGD variability.
+On the empirical side, the short data history and the lack of sufficiently granular information negatively affected model performance. This was particularly the case for the Hillebrand model, which, despite being theoretically promising due to its flexible dependence structure between PD and LGD, proved unusable in practice given the limitations of the dataset.\\
+
+To complement this and evaluate the issue from a different perspective, we explored a Bottom-Up approach to assess the direct effects of climate risks on collateral values and LGD.
+
+Physical risk was modeled using the LISFLOOD hydrological model, with damages converted into stressed Loan-to-Value (LTV) ratios. Results show a moderate increase in LGD as scenario severity rises, though this effect is tempered by already elevated baseline LTVs in the portfolio.
+
+Transition risk was modeled through projected depreciation of energy-inefficient properties, using energy price trajectories and regulatory assumptions. These were reflected in adjusted LTV ratios, which served as inputs to a random forest model. The highest LGD values were observed under the Net Zero 2050 scenario, though overall changes remained moderate.
+
+Overall, results from both approaches were directionally consistent: more adverse climate scenarios are associated with higher expected credit losses. 
+However, the magnitude of this effect remained limited in the Bottom-Up framework, primarily due to data availability. Key limitations include the lack of precise geographic and energy efficiency data.\\%, the limited predictive power of the models used—particularly the random forest—and the absence of foreclosure indicators, which prevented the implementation of a more advanced two-stage LGD framework.
+%However, the magnitude of this effect remained limited in the Bottom-Up framework due to data and model constraints.
+
+%Key limitations include missing geographic and energy performance data, low predictive power of the Bottom-Up models, and the absence of foreclosure indicators—preventing the use of more advanced modeling techniques.
+
+Looking ahead, a promising extension would be to implement a two-stage LGD model that separately estimates the probability of foreclosure and the severity of loss using a haircut model. This methodology has shown superior predictive performance in the literature and would offer a more granular view of the recovery process. However, it could not be applied here due to the lack of data indicating whether a property was actually foreclosed.
+
+
+%In a context marked by growing climate urgency and increasing regulatory demands for sustainable finance, it is necessary for banks to assess their exposure from adverse risk that arises with climate-related questions. 
+%With the Paris climate agreements in 2015, the various countries that came together countries agreed to work towards limiting global warming to below 2°C, and to halve net GHG emissions compared with 1990 levels, until virtually zero by the end of the century. To achieve this ambitious goal, all players at various levels have a key role to play. Companies, for example, have a duty to face up to these climate risks by modifying their production systems to help reduce greenhouse gas emissions, sometimes at the cost of their profitability. Some business sectors, such as energy, agriculture, construction and the automotive will be particularly affected by this ecological transition. It is therefore clear that these various make companies even more financially vulnerable, thereby increasing their risk of default with banks.
+
+
+%Given the importance of climate change in financial risk management (particularly credit risk), this study aimed to assess the impact of climate risks on the \textit{Loss Given Default} (LGD) within a residential mortgage loan portfolio. Unlike traditional approaches that assume a constant and conservative LGD, we explored two complementary methodologies—the \textit{Top-Down} and \textit{Bottom-Up} approaches—to incorporate both economic and physical consequences of climate change into LGD modelling.\\
+
+
+%The \textit{Top-Down} approach, based on the \textit{Asymptotic Single Risk Factor} (ASRF) framework, enabled us to link the systemic factor to macroeconomic variables affected by NGFS climate scenarios. By modelling the dependence between PD and LGD using the Hillebrand, Frye-Jacobs, and structural Merton-based models, we highlighted the non-negligible sensitivity of LGD to macroeconomic shocks induced by climate transition pathways.\\
+
+
+%In parallel, the \textit{Bottom-Up} approach allowed us to evaluate the direct effects of physical risks —such as flooding— as well as transition risks on collateral value and recovery rates. Using the LISFLOOD hydrological model and real estate devaluation projections based on energy performance labels, we found a significant increase in LGD under extreme climate scenarios, emphasizing the actual vulnerability of the portfolio to these risks.\\
+
+
+%This work demonstrates that integrating climate risk into LGD modelling is not only a regulatory requirement but a necessity for a more accurate assessment of credit risk. It highlights that traditional LGD models tend to underestimate risk, particularly in the face of evolving climate-related challenges. Our previous work on the Bottom-up approach, focusing on physical risks such as floods, was limited in scope. However, many other types of risks must also be considered, including storms, coastal erosion (RGA), droughts, and more. \\
+
+%However, this study has some limitations. The performance of the models, particularly in the Bottom-Up approach, remains imperfect, as evidenced by relatively low performance indicators. Additionally, the quality of projections heavily depends on the availability and reliability of environmental and economic data, highlighting the need for improved data collection and climate projection methodologies. \\
+
+
+%Future research could expand this analysis to other asset classes or loan types and further investigate the time dynamics of risk parameters under climate constraints. Ultimately, the quality of climate stress testing remains highly dependent on the availability and reliability of environmental and economic data, calling for continuous improvement in data collection and climate projection methodologies. \\
+
+
+
+
+
+
+
+
+\clearpage
+\newpage
+\thispagestyle{empty} % Supprime la numérotation de cette page si nécessaire
+\pagenumbering{roman}
+
+\vspace*{\fill} % Ajoute un espace vertical pour centrer le titre
+
+\begin{center}
+    \begingroup
+    \fontsize{27}{20}\selectfont % Ajuste la taille de police (27pt) et l'interligne (20pt)
+    \rule{\linewidth}{0.5pt} \\ % Ligne horizontale au-dessus du titre
+    \vspace{10pt} % Espace entre la ligne et le titre
+    \textbf{Appendices} \\ % Titre en gras
+    \vspace{10pt} % Espace entre le titre et la ligne
+    \rule{\linewidth}{0.5pt} % Ligne horizontale en dessous du titre
+    \endgroup
+\end{center}
+
+
+
+\vspace*{\fill} % Ajoute un espace vertical pour centrer le titre
+\addcontentsline{toc}{chapter}{Appendices} 
+
+\newpage
+
+\captionsetup{
+    font=bf, 
+    size=large, 
+    justification=centering, 
+    singlelinecheck=false,
+}
+
+
+
+
+\begin{longtable}{l p{12cm}}
+\hline
+\textbf{Variable} & \textbf{Description} \\
+\hline
+\endfirsthead
+
+\hline
+\multicolumn{2}{c}{\textit{(Continued from previous page)}} \\
+\textbf{Variable} & \textbf{Description} \\
+\hline
+\endhead
+
+\hline
+\multicolumn{2}{r}{\textit{(Continued on next page)}} \\
+\endfoot
+
+\hline
+\caption{Variables of the database} \label{tab:data_variables} \\
+\endlastfoot
+
+ID & Unique identifier for each observation \\
+Code\_postal & Postal code of the borrower's location \\
+Date\_de\_defaut & Date when a payment default was recorded \\
+LGD\_realisee & Realized Loss Given Default, expressed as a percentage \\
+Type\_de\_client & Category of the client \\
+Nature\_du\_bien & Type of financed property \\
+Etat\_du\_bien & General condition of the financed property \\
+Garantie & Type of guarantee associated with the loan \\
+Cout\_acquisition & Total acquisition cost of the financed property \\
+Taux\_interet & Interest rate applied to the loan \\
+Revenus\_emprunteur & Annual or monthly income of the borrower \\
+Montant\_du\_pret & Total borrowed amount \\
+Montant\_apport & Amount of personal funds contributed by the borrower \\
+Montant\_epargne & Total savings of the borrower \\
+Taux\_apport & Proportion of personal contribution relative to total cost \\
+Taux\_endettement & Percentage of income allocated to loan repayment \\
+LTV\_octroi & Loan-to-Value (loan amount to property value ratio) at origination \\
+LTV\_actualisee & Updated Loan-to-Value ratio based on current property value \\
+Duree\_residuelle & Remaining duration before loan maturity \\
+Note\_octroi & Score assigned at loan origination \\
+Note\_de\_risque & Risk score assigned to the loan \\
+Age\_emprunteur & Age of the borrower \\
+Anciennete\_professionnelle & Borrower's professional tenure \\
+annee\_de\_construction & Year of construction of the financed property \\
+Etiquette\_EPCs & Energy Performance Certificate (EPC) rating \\
+Etiquette\_GES & Greenhouse Gas Emissions (GHG) label \\
+adresse\_geocodee & Geolocated address \\
+mean\_surface\_m2 & Average surface area of the property \\
+prix\_par\_m2 & Average price per square meter \\
+surface\_proxy & Proxy for property surface area \\
+valeur\_garantie & Value of the loan guarantee \\
+EAD & Exposure at Default \\
+latitude & Geographical latitude of the property \\
+longitude & Geographical longitude of the property \\
+Completion\_etiquette & Data completion indicator (if labels are provided) \\
+WKT & Well-Known Text - Geospatial data representation \\
+\end{longtable}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CGAM variables projections
+\begin{figure}[H]
+    \caption{Macroeconomic variables projections in NiGEM NGFS v1.22 GCAM 5.3+ NGFS model (index, base 100 = 2022)}
+    \label{fig:cgam}
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/NGFS/CGAM/Modeling_Z_24_0.png}
+        \caption{Inflation rate}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/NGFS/CGAM/Modeling_Z_24_1.png}
+        \caption{Unemployment rate}
+    \end{subfigure}
+    
+    \vspace{0.5cm} % Espace entre les lignes
+    
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/NGFS/CGAM/Modeling_Z_24_2.png}
+        \caption{Effective exchange rate}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/NGFS/CGAM/Modeling_Z_24_3.png}
+        \caption{Oil price}
+    \end{subfigure}
+    
+    \vspace{0.5cm}
+    
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/NGFS/CGAM/Modeling_Z_24_4.png}
+        \caption{Long term interest rate}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/NGFS/CGAM/Modeling_Z_24_5.png}
+        \caption{House prices (residential)}
+    \end{subfigure}
+    
+    \vspace{0.5cm}
+    
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/NGFS/CGAM/Modeling_Z_24_6.png}
+        \caption{Equity prices}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/NGFS/CGAM/Modeling_Z_24_7.png}
+        \caption{GDP}
+    \end{subfigure}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% MESSAGEix variables projections
+\begin{figure}[H]
+    
+    \label{fig:message}
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/NGFS/MESSAGEix/Modeling_Z_32_4.png}
+        \caption{Inflation rate}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/NGFS/MESSAGEix/Modeling_Z_32_6.png}
+        \caption{Unemployment rate}
+    \end{subfigure}
+    
+    \vspace{0.5cm} % Espace entre les lignes
+    
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/NGFS/MESSAGEix/Modeling_Z_32_2.png}
+        \caption{Effective exchange rate}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/NGFS/MESSAGEix/Modeling_Z_32_5.png}
+        \caption{Oil price}
+    \end{subfigure}
+    
+    \vspace{0.5cm}
+    
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/NGFS/MESSAGEix/Modeling_Z_32_1.png}
+        \caption{Long term interest rate}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/NGFS/MESSAGEix/Modeling_Z_32_0.png}
+        \caption{House prices (residential)}
+    \end{subfigure}
+    
+    \vspace{0.5cm}
+    
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/NGFS/MESSAGEix/Modeling_Z_32_3.png}
+        \caption{Equity prices}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/NGFS/MESSAGEix/Modeling_Z_32_7.png}
+        \caption{GDP}
+    \end{subfigure}
+    \caption{Macroeconomic variables projections in NiGEM NGFS v1.22 MESSAGEix-GLOB model (index, base 100 = 2022)}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% REMIND variables projections
+\begin{figure}[H]
+    
+    \label{fig:remind}
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/NGFS/REMIND/Modeling_Z_39_4.png}
+        \caption{Inflation rate}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/NGFS/REMIND/Modeling_Z_39_6.png}
+        \caption{Unemployment rate}
+    \end{subfigure}
+    
+    \vspace{0.5cm} % Espace entre les lignes
+    
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/NGFS/REMIND/Modeling_Z_39_2.png}
+        \caption{Effective exchange rate}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/NGFS/REMIND/Modeling_Z_39_5.png}
+        \caption{Oil price}
+    \end{subfigure}
+    
+    \vspace{0.5cm}
+    
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/NGFS/REMIND/Modeling_Z_39_1.png}
+        \caption{Long term interest rate}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/NGFS/REMIND/Modeling_Z_39_0.png}
+        \caption{House prices (residential)}
+    \end{subfigure}
+    
+    \vspace{0.5cm}
+    
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/NGFS/REMIND/Modeling_Z_39_3.png}
+        \caption{Equity prices}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/NGFS/REMIND/Modeling_Z_39_7.png}
+        \caption{GDP}
+    \end{subfigure}
+    \caption{Macroeconomic variables projections in NiGEM NGFS v1.22 REMIND-MAgPIE model (index, base 100 = 2022)}
+\end{figure}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%% Scatter plot Z vs macro
+\begin{figure}[H]
+    \centering
+    
+    \includegraphics[width=0.8\linewidth]{images/scatter_plot_Z_macro.png}
+    \label{fig:scatter-corr-Z-macro}
+    \caption{Scatter plot of the systemic factor according to the variables}
+\end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%% Linear regression
+\begin{longtable}{lp{3cm}p{3cm}p{3cm}}
+    \label{tab:linear_regression_results}\\
+        \toprule
+        & Coefficients &  P>|t| & CI 95\% \\
+        \hline
+        Intercept & -0.1534 & 0.021 & [-0.280; -0.027] \\
+        House prices (residential) & -14.9884 & 0.066 & [-31.121; 1.144] \\
+        Long term interest rate & -0.2733 & 0.218 & [-0.726; 0.180] \\
+        Effective exchange rate & 0.0804 & 0.242 & [-0.060; 0.221] \\
+        Equity prices & -0.3181 & 0.584 & [-1.531; 0.894] \\
+        Inflation rate & 0.6221 & 0.015 & [0.138; 1.107] \\
+        Oil price & -1.1398 & 0.007 & [-1.925; -0.355] \\
+        GDP Growth Rate & 0.0234 & 0.864 & [-0.262; 0.309] \\
+        Unemployment rate & -0.2855 & 0.343 & [-0.907; 0.336] \\[5mm]
+        \hline
+        \multicolumn{4}{c}{$R^2 = 0.598; \ R^2 Adj = 0.383; \
+        \textit{Fisher test (P-value)} = 0.0417; \
+        AIC = -4.490 ;\
+        BIC = 6.113$}\\
+        \hline
+        \caption{Linear regression results}
+\end{longtable}
+
+
+\begin{table}[H]
+    \centering
+    
+    \begin{tabular}{lc}
+    \toprule
+    Tests & Results \\
+    \hline
+    Durbin-Watson & 2.310 \\
+    Max VIF & 2.490 \\
+    Breusch-Pagan (P-value) & 0.443 \\
+    Shapiro-Wilk (P-value) & 0.974 \\
+    Jarque Bera (P-value) &  0.940 \\
+    Unit root (P-value) & 0.000 \\
+    \bottomrule
+    \end{tabular}
+    \caption{Statistical tests to assess the goodness of linear regression}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{images/pred_linear_reg.png}
+    \caption{Predictions of linear regression}
+    \label{fig:linear_pred_Z}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{images/hilebrant.png}
+    \caption{scatter plot of probit LGD and probit PD}
+    \label{hilebrant}
+\end{figure}
+
+
+\begin{table}[H]
+    \centering
+    
+    \label{tab:economic_coefficients_BACE} 
+    \begin{tabular}{lrr}
+    \toprule
+    Variable & BACE Coefficient & PIP \\
+    \midrule
+    Intercept & -0.13 & - \\
+    Oil price & -1.17 & 1.00 \\
+    Long term interest rate & -0.06 & 0.36 \\
+    GDP Growth Rate & -0.05 & 0.36 \\
+    Unemployment rate & -0.03 & 0.21 \\
+    Effective exchange rate & 0.01 & 0.20 \\
+    Equity prices & -0.11 & 0.26 \\
+    Inflation rate & 0.53 & 1.00 \\
+    House prices (residential) & -5.95 & 0.62 \\
+    \bottomrule
+    \end{tabular}
+    \caption{Estimated coefficients with BACE models}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{images/bma_results.png}
+    \caption{Predictions of BACE}
+    \label{fig:BACE_res}
+\end{figure}
+
+
+\begin{figure}[H]
+    \label{fig:LGD_projections}
+    \centering
+    \begin{subfigure}{0.8\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/NGFS/Projections Z/LGD_Frye_STEP.png}
+        \caption{Frye-jacobs models}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.8\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{images/NGFS/Projections Z/LGD_Merton_STEP.png}
+        \caption{Merton model}
+    \end{subfigure}
+    \hfill
+ %   \begin{subfigure}{0.8\textwidth}
+ %       \centering
+  %      \includegraphics[width=\linewidth]{images/NGFS/Projections Z/LGD_Hillebrant_STEP.png}
+  %      \caption{Hillbrand model}
+  %  \end{subfigure}
+  \caption{LGD projections using PD-LGD dependency models - Top Down}
+\end{figure}
+
+\newpage
+
+%%%%%%%%%%%%%% BOTTOM UP
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{images/Stat_desc_Buttom-up/scatter_plot.png}
+    \caption{Scatter plot of the realized lgd accoring to quantitative variables}
+    \label{scatter_plot}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{images/Stat_desc_Buttom-up/pearson.png}
+    \caption{Pearson matrix}
+    \label{pearson}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{images/Stat_desc_Buttom-up/spearman.png}
+    \caption{Spearman matrix}
+    \label{spearman}
+\end{figure}
+
+
+\paragraph*{Integration of climate risk -LGD estimation models-}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{images/bottom-up/strat_echantillons.png}
+    \caption{Distribution of LGD among each dataset}
+    \label{fig:strat_ech}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/bottom-up/shap_rf_final.png}
+    \caption{SHAP values for the RF model}
+    \label{fig:shap_rf}
+\end{figure}
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{table}[H]
+    \centering
+    
+    \label{tab:DPE_CE}
+    \begin{tabular}{lccc}
+        \toprule
+        \textbf{DPE} & \textbf{Lower Bound} & \textbf{Upper Bound} & \textbf{Median Value} \\
+        \midrule
+        A & 0   & 50  & 25.0 \\
+        B & 51  & 90  & 70.5 \\
+        C & 91  & 150 & 120.5 \\
+        D & 151 & 230 & 190.5 \\
+        E & 231 & 330 & 280.5 \\
+        F & 331 & 450 & 390.5 \\
+        G & 451 & >450 & 550.0 \\
+        \bottomrule
+    \end{tabular}
+    \caption{Average energy consumption per EPC class in France (in kWh/m²/year)}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    
+    \label{tab:ltv_baseline}
+    \begin{tabular}{lcccccc}
+        \hline
+        \textbf{Property Type} & \textbf{Energy Class} & \textbf{Mean} & \textbf{Median} & \textbf{P75} & \textbf{P90} & \textbf{Max} \\
+        \hline
+        \multirow{7}{*}{Appartement} & A & 0.7266 & 0.7900 & 0.8723 & 0.9170 & 0.9898 \\
+         & B & 0.7476 & 0.8008 & 0.8941 & 0.9574 & 1.0023 \\
+         & C & 0.7242 & 0.7903 & 0.8944 & 0.9527 & 1.0049 \\
+         & D & 0.7251 & 0.7972 & 0.8941 & 0.9582 & 1.0086 \\
+         & E & 0.7177 & 0.7988 & 0.8937 & 0.9525 & 1.0133 \\
+         & F & 0.7458 & 0.8097 & 0.9080 & 0.9682 & 1.0192 \\
+         & G & 0.6970 & 0.7552 & 0.8874 & 0.9555 & 1.0278 \\ \hline
+        \multirow{7}{*}{Maison} & A & 0.7448 & 0.8307 & 0.9204 & 0.9600 & 1. \\
+         & B & 0.6998 & 0.7724 & 0.8749 & 0.9317 & 1.0032 \\
+         & C & 0.7280 & 0.7948 & 0.8824 & 0.9427 & 1.0067 \\
+         & D & 0.7355 & 0.7974 & 0.9003 & 0.9614 & 1.0116 \\
+         & E & 0.7489 & 0.8172 & 0.9044 & 0.9570 & 1.0181 \\
+         & F & 0.7449 & 0.8032 & 0.9045 & 0.9747 & 1.0261 \\
+         & G & 0.7348 & 0.8095 & 0.9122 & 0.9814 & 1.0378 \\
+        \hline
+    \end{tabular}
+    \caption{LTV Stress - Baseline}
+    \label{ltv_stressed}
+\end{table}
+
+
+\begin{table}[H]
+    \centering
+    
+    \label{tab:ltv_below2c}
+    \begin{tabular}{lcccccc}
+        \hline
+        \textbf{Property Type} & \textbf{Energy Class} & \textbf{Mean} & \textbf{Median} & \textbf{P75} & \textbf{P90} & \textbf{Max} \\
+        \hline
+        \multirow{7}{*}{Appartement} & A & 0.7266 & 0.7900 & 0.8723 & 0.9170 & 0.9898 \\
+         & B & 0.7486 & 0.8018 & 0.8953 & 0.9587 & 1.0037 \\
+         & C & 0.7262 & 0.7925 & 0.8969 & 0.9553 & 1.0077 \\
+         & D & 0.7286 & 0.8011 & 0.8985 & 0.9628 & 1.0135 \\
+         & E & 0.7230 & 0.8048 & 0.9004 & 0.9597 & 1.0209 \\
+         & F & 0.7539 & 0.8185 & 0.9179 & 0.9787 & 1.0302 \\
+         & G & 0.7080 & 0.7671 & 0.9014 & 0.9706 & 1.0440 \\ \hline
+        \multirow{7}{*}{Maison} & A & 0.7448 & 0.8307 & 0.9204 & 0.9600 & 1. \\
+         & B & 0.7012 & 0.7740 & 0.8766 & 0.9336 & 1.0052 \\
+         & C & 0.7311 & 0.7982 & 0.8862 & 0.9468 & 1.0110 \\
+         & D & 0.7411 & 0.8034 & 0.9071 & 0.9687 & 1.0192 \\
+         & E & 0.7577 & 0.8268 & 0.9150 & 0.9682 & 1.0300 \\
+         & F & 0.7575 & 0.8169 & 0.9198 & 0.9913 & 1.0435 \\
+         & G & 0.7530 & 0.8296 & 0.9349 & 1.0058 & 1.0636 \\
+        \hline
+    \end{tabular}
+    \caption{LTV Stress - Below 2°C}
+\end{table}
+
+
+\begin{table}[H]
+    \centering
+    
+    \label{tab:ltv_delayed}
+    \begin{tabular}{lcccccc}
+        \hline
+        \textbf{Property Type} & \textbf{Energy Class} & \textbf{Mean} & \textbf{Median} & \textbf{P75} & \textbf{P90} & \textbf{Max} \\
+        \hline
+        \multirow{7}{*}{Appartement} & A & 0.7266 & 0.7900 & 0.8723 & 0.9170 & 0.9898 \\
+         & B & 0.7481 & 0.8013 & 0.8947 & 0.9580 & 1.0030 \\
+         & C & 0.7252 & 0.7913 & 0.8955 & 0.9539 & 1.0062 \\
+         & D & 0.7268 & 0.7990 & 0.8961 & 0.9603 & 1.0109 \\
+         & E & 0.7201 & 0.8015 & 0.8967 & 0.9558 & 1.0168 \\
+         & F & 0.7495 & 0.8138 & 0.9125 & 0.9730 & 1.0242 \\
+         & G & 0.7020 & 0.7606 & 0.8938 & 0.9623 & 1.0352 \\ \hline
+        \multirow{7}{*}{Maison} & A & 0.7448 & 0.8307 & 0.9204 & 0.9600 & 1. \\
+         & B & 0.7015 & 0.7743 & 0.8770 & 0.9340 & 1.0056 \\
+         & C & 0.7317 & 0.7988 & 0.8869 & 0.9475 & 1.0118 \\
+         & D & 0.7421 & 0.8045 & 0.9083 & 0.9700 & 1.0206 \\
+         & E & 0.7593 & 0.8285 & 0.9169 & 0.9702 & 1.0321 \\
+         & F & 0.7598 & 0.8194 & 0.9226 & 0.9943 & 1.0467 \\
+         & G & 0.7564 & 0.8333 & 0.9391 & 1.0103 & 1.0683 \\
+        \hline
+    \end{tabular}
+    \caption{LTV Stress - Delayed Transition}
+\end{table}
+
+
+\begin{table}[H]
+    \centering
+    
+    \label{tab:ltv_ndcs}
+    \begin{tabular}{lcccccc}
+        \hline
+        \textbf{Property Type} & \textbf{Energy Class} & \textbf{Mean} & \textbf{Median} & \textbf{P75} & \textbf{P90} & \textbf{Max} \\
+        \hline
+        \multirow{7}{*}{Appartement} & A & 0.7266 & 0.7900 & 0.8723 & 0.9170 & 0.9898 \\
+         & B & 0.7482 & 0.8015 & 0.8949 & 0.9582 & 1.0032 \\
+         & C & 0.7255 & 0.7917 & 0.8960 & 0.9544 & 1.0067 \\
+         & D & 0.7274 & 0.7997 & 0.8969 & 0.9612 & 1.0118 \\
+         & E & 0.7211 & 0.8026 & 0.8980 & 0.9572 & 1.0183 \\
+         & F & 0.7510 & 0.8154 & 0.9144 & 0.9750 & 1.0263 \\
+         & G & 0.7041 & 0.7629 & 0.8964 & 0.9652 & 1.0382 \\ \hline
+        \multirow{7}{*}{Maison} & A & 0.7448 & 0.8307 & 0.9204 & 0.9600 & 1. \\
+         & B & 0.7008 & 0.7735 & 0.8761 & 0.9331 & 1.0046 \\
+         & C & 0.7302 & 0.7971 & 0.8851 & 0.9456 & 1.0097 \\
+         & D & 0.7394 & 0.8016 & 0.9051 & 0.9665 & 1.0169 \\
+         & E & 0.7550 & 0.8239 & 0.9118 & 0.9648 & 1.0264 \\
+         & F & 0.7537 & 0.8127 & 0.9152 & 0.9862 & 1.0382 \\
+         & G & 0.7475 & 0.8235 & 0.9280 & 0.9984 & 1.0557 \\
+        \hline
+    \end{tabular}
+    \caption{LTV Stress - Nationally Determined Contributions (NDCs)}
+\end{table}
+
+
+\begin{table}[H]
+    \centering
+    
+    \label{tab:ltv_netzero}
+    \begin{tabular}{lcccccc}
+        \hline
+        \textbf{Property Type} & \textbf{Energy Class} & \textbf{Mean} & \textbf{Median} & \textbf{P75} & \textbf{P90} & \textbf{Max} \\
+        \hline
+        \multirow{7}{*}{Appartement} & A & 0.7266 & 0.7900 & 0.8723 & 0.9170 & 0.9898 \\
+         & B & 0.7508 & 0.8042 & 0.8980 & 0.9615 & 1.0067 \\
+         & C & 0.7308 & 0.7975 & 0.9025 & 0.9613 & 1.0141 \\
+         & D & 0.7367 & 0.8099 & 0.9084 & 0.9734 & 1.0247 \\
+         & E & 0.7355 & 0.8186 & 0.9159 & 0.9762 & 1.0386 \\
+         & F & 0.7728 & 0.8391 & 0.9409 & 1.0033 & 1.0561 \\
+         & G & 0.7342 & 0.7954 & 0.9347 & 1.0064 & 1.0826 \\ \hline
+        \multirow{7}{*}{Maison} & A & 0.7448 & 0.8307 & 0.9204 & 0.9600 & 1. \\
+         & B & 0.7048 & 0.7779 & 0.8810 & 0.9383 & 1.0103 \\
+         & C & 0.7389 & 0.8067 & 0.8957 & 0.9569 & 1.0218 \\
+         & D & 0.7550 & 0.8185 & 0.9241 & 0.9869 & 1.0384 \\
+         & E & 0.7801 & 0.8513 & 0.9421 & 0.9968 & 1.0605 \\
+         & F & 0.7905 & 0.8524 & 0.9599 & 1.0344 & 1.0889 \\
+         & G & 0.8020 & 0.8835 & 0.9957 & 1.0712 & 1.1327 \\
+        \hline
+    \end{tabular}
+    \caption{LTV Stress - Net Zero 2050}
+    \label{table_scenario_f}
+\end{table}
+
+
+\newpage 
+\section*{LGD estimation for transition risk with linear regression}
+
+We replace \textit{LTV\_actualisee} variable with the stressed LTV variable from each NGFS scenario and apply the regression model to estimate the LGD for each scenario.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{lc}
+        \hline
+        \textbf{Scenario} & \textbf{Predicted Average LGD} \\
+        \hline
+        Baseline & 0.2875 \\
+        Below 2° C & 0.2883 \\
+        Delayed Transition & 0.2884 \\
+        Nationally Determined Contributions (NDCs) & 0.2881 \\
+        Net Zero 2050 & 0.2905 \\
+        \hline
+    \end{tabular}
+    \caption{Predicted Average LGD under different NGFS scenarios using Stepwise Regression.}
+    \label{tab:lgd_predicted_stepwise}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{images//bottom-up/lgdStepwise.png}
+    \caption{Predicted Average LGD under different NGFS scenarios using Stepwise Regression.}
+    \label{fig:lgd_stepwise}
+\end{figure}
+
+We observe that the predicted average LGD values (approximately 0.2885) and the average value of the \textit{Realized\_LGD} (around 0.22) are relatively close.  
+
+The difference between the two can be explained by the model's performance, with a low $ R^2 $ of 2.3\%.  
+
+Moreover, we notice that the predicted LGD increases with the severity of the NGFS scenarios. The highest LGD is observed under the Net Zero 2050 scenario (0.2905), which reflects the economic impact of a rapid transition towards carbon neutrality. This suggests that stricter climate policies and their associated transition risks could lead to an increase in expected credit losses. 
+\newline
+
+Nonetheless, as detailed in the corresponding section, the performance of this model must be qualified by its poor interpretability and the low proportion of variance explained (low $R^2$). The main assumptions of Linear Regression are not verified. However, we can note that LGDs evolve in a consistent direction as a function of stressed LTVs: a larger LTV, all other things being equal, induces greater exposure to risk.
+\newpage
+
+\chapter*{References}
+\addcontentsline{toc}{chapter}{References}
+\begin{multicols}{2}
+    \printbibliography[heading=none]
+\end{multicols}
+
+
+
+
+
+\end{document}

@@ -1,0 +1,285 @@
+@article{morgan1997creditmetrics,
+  title={Creditmetrics-technical document},
+  author={Morgan, JP and others},
+  journal={JP Morgan, New York},
+  volume={1},
+  pages={102--127},
+  year={1997},
+  publisher={Citeseer}
+}
+
+@article{mauri2023lgd,
+  title={LGD Stress Testing: a Bayesian Averaging Modeling Approach},
+  author={Mauri, Andrea and Di Sivo, Raffaele and Veksein, Evgenii},
+  journal={Research Paper Series, Issue},
+  number={60},
+  year={2023}
+}
+
+@misc{basel2005guidance,
+  title={Guidance on paragraph 468 of the framework document},
+  author={Basel Committee on Banking Supervision},
+  year={2005},
+  publisher={Bank for International Settlements Basel, Switzerland}
+}
+
+@article{pineau2023three,
+  title={Three PD-LGD models for a stress test exercise},
+  author={Pineau, Edouard},
+  year={2023}
+}
+
+@article{ESRB_2016,
+    title = {Too late, too sudden: {Transition} to a low-carbon economy and systemic risk},
+    author = {ESRB, European systemic risk board},
+    language = {en},
+    year = {2016},
+}
+
+@article{altman2005link,
+  title={The link between default and recovery rates: Theory, empirical evidence, and implications},
+  author={Altman, Edward I and Brady, Brooks and Resti, Andrea and Sironi, Andrea},
+  journal={The Journal of Business},
+  volume={78},
+  number={6},
+  pages={2203--2228},
+  year={2005},
+  publisher={JSTOR}
+}
+
+@article{hillebrand2006modeling,
+  title={Modeling and estimating dependent loss given default},
+  author={Hillebrand, Martin},
+  journal={Risk},
+  number={September 2006},
+  year={2006}
+}
+
+
+@misc{cirillo_modeling_2018,
+	address = {Rochester, NY},
+	type = {{SSRN} {Scholarly} {Paper}},
+	title = {Modeling the {Dependence} between {PD} and {LGD}},
+	doi = {10.2139/ssrn.3113255},
+	language = {en},
+	publisher = {Social Science Research Network},
+	author = {Cirillo, Pasquale and Maio, Vittorio},
+	month = jan,
+	year = {2018},
+	keywords = {Bivariate Non Central Beta, Credit Risk, Frank Copula, PD - LGD correlation, Regulatory Capital, Survival Analysis, Unexpected Loss}
+}
+
+@article{tasche2004single,
+  title={The single risk factor approach to capital charges in case of correlated loss given default rates},
+  author={Tasche, Dirk},
+  journal={arXiv preprint cond-mat/0402390},
+  year={2004}
+}
+
+@article{pykhtin2003recovery,
+  title={Recovery rates: Unexpected recovery risk},
+  author={Pykhtin, Michael},
+  journal={RISK-LONDON-RISK MAGAZINE LIMITED-},
+  volume={16},
+  number={8},
+  pages={74--79},
+  year={2003},
+  publisher={RISK MAGAZINE LIMITED}
+}
+
+@incollection{frye2013credit,
+  title={Credit loss and systematic LGD},
+  author={Frye, Jon and Jacobs Jr, Michael},
+  booktitle={Managing and Measuring Risk: Emerging Global Standards and Regulations After the Financial Crisis},
+  pages={307--339},
+  year={2013},
+  publisher={World Scientific}
+}
+
+@article{giese2005impact,
+  title={The impact of PD/LGD correlations on credit risk capital},
+  author={Giese, Guido},
+  journal={RISK-LONDON-RISK MAGAZINE LIMITED-},
+  volume={18},
+  number={4},
+  pages={79},
+  year={2005},
+  publisher={RISK MAGAZINE LIMITED}
+}
+
+
+@article{bis_2005,
+	title = {An {Explanatory} {Note} on the {Basel} {II} {IRB} {Risk} {Weight} {Functions} - {July} 2005},
+	language = {en},
+        author = {Basel Committee on Banking Supervision},
+        year = {2005}
+}
+
+@article{formula_merton_schafer,
+    author = {Schäfer, Koivusalo} ,
+    title = {Dependence of defaults and recoveries in structural credit risk models},
+    journal = {Economic Modelling},
+    year = {2013}
+}
+
+@article{PD_merton,
+    author = {Robert C Merton},
+    title = {On the pricing of corporate debt : The risk structure of interest rates},
+    journal = {The journal of finance},
+    year = {1974}
+}
+
+
+@article{seidler2009implied,
+  title={Implied market loss given default in the Czech Republic: structural-model approach},
+  author={Seidler, Jakub and Jakubik, Petr},
+  journal={Czech Journal of Economics and Finance (Finance a uver)},
+  volume={59},
+  number={1},
+  pages={20--40},
+  year={2009},
+  publisher={Charles University Prague, Faculty of Social Sciences}
+}
+
+@article{li1999default,
+  title={On default correlation: A copula function approach},
+  author={Li, David X},
+  journal={Available at SSRN 187289},
+  year={1999}
+}
+
+@article{maio2016modelling,
+  title={Modelling the dependence between PD and LGD. A new regulatory capital calculation with empirical analysis from the US mortgage market},
+  author={Maio, Vittorio},
+  year={2016},
+  publisher={Politecnico di Milano}
+}
+
+@article{vasicek2002distribution,
+  title={The distribution of loan portfolio value},
+  author={Vasicek, Oldrich},
+  journal={Risk},
+  volume={15},
+  number={12},
+  pages={160--162},
+  year={2002},
+  publisher={Citeseer}
+}
+
+@article{dottori2016development,
+  title={Development and evaluation of a framework for global flood hazard mapping},
+  author={Dottori, Francesco and Salamon, Peter and Bianchi, Alessandra and Alfieri, Lorenzo and Hirpa, Feyera Aga and Feyen, Luc},
+  journal={Advances in water resources},
+  volume={94},
+  pages={87--102},
+  year={2016},
+  publisher={Elsevier}
+}
+
+@techreport{huizinga2017global,
+  title={Global flood depth-damage functions: Methodology and the database with guidelines},
+  author={Huizinga, Jan and De Moel, Hans and Szewczyk, Wojciech},
+  year={2017},
+  institution={Joint Research Centre}
+}
+
+@article{roncalli2022handbook,
+  title={Handbook of sustainable finance},
+  author={Roncalli, Thierry},
+  journal={Available at SSRN 4277875},
+  year={2022}
+}
+
+@techreport{ter2021german,
+  title={German residential real estate valuation under NGFS climate scenarios},
+  author={Ter Steege, Lucas and Vogel, Edgar},
+  year={2021},
+  institution={Technical Paper}
+}
+
+@article{sopgoui2024modeling,
+  title={Modeling the impact of Climate transition on real estate prices},
+  author={Sopgoui, Lionel},
+  journal={arXiv preprint arXiv:2408.02339},
+  year={2024}
+}
+
+@article{rosen1974hedonic,
+  title={Hedonic prices and implicit markets: products differenciation in pure competition},
+  author={Rosen},
+  journal={Journal of political economy},
+  number={82},
+  pages={34--55},
+  year={1974}
+}
+
+@book{alogoskoufis2021ecb,
+  title={ECB economy-wide climate stress test: Methodology and results},
+  author={Alogoskoufis, Spyros and Dunz, Nepomuk and Emambakhsh, Tina and Hennig, Tristan and Kaijser, Michiel and Kouratzoglou, Charalampos and Mu{\~n}oz, Manuel A and Parisi, Laura and Salleo, Carmelo},
+  number={281},
+  year={2021},
+  publisher={ECB Occasional Paper}
+}
+
+@article{garnier2021climate,
+  title={The climate extended risk model (cerm)},
+  author={Garnier, Josselin and Gaudemet, Jean-Baptiste and Gruz, Anne},
+  journal={arXiv preprint arXiv:2103.03275},
+  year={2021}
+}
+
+@article{semieniuk2021low,
+  title={Low-carbon transition risks for finance},
+  author={Semieniuk, Gregor and Campiglio, Emanuele and Mercure, Jean-Francois and Volz, Ulrich and Edwards, Neil R},
+  journal={Wiley Interdisciplinary Reviews: Climate Change},
+  volume={12},
+  number={1},
+  pages={e678},
+  year={2021},
+  publisher={Wiley Online Library}
+}
+
+
+@article{bilskie2022future,
+  title={Future flood risk exacerbated by the dynamic impacts of sea level rise along the Northern Gulf of Mexico},
+  author={Bilskie, Matthew V and Angel, D Del and Yoskowitz, David and Hagen, Scott C},
+  journal={Earth's Future},
+  volume={10},
+  number={4},
+  pages={e2021EF002414},
+  year={2022},
+  publisher={Wiley Online Library}
+}
+
+@misc{agreement2015united,
+  title={United nations},
+  author={Paris Agreement},
+  year={2015}
+}
+
+@article{aboh2023developpement,
+  title={D{\'e}veloppement d’un mod{\`e}le de stress-test climatique sur un portefeuille de cr{\'e}dit corporate},
+  author={Aboh, Marcos and Kengne, Thierry and Cousin, Areski},
+  year={2023}
+}
+
+@article{granger1974spurious,
+  title={Spurious regressions in econometrics},
+  author={Granger, Clive WJ and Newbold, Paul},
+  journal={Journal of econometrics},
+  volume={2},
+  number={2},
+  pages={111--120},
+  year={1974},
+  publisher={Citeseer}
+}
+
+@book{blanchard2017macroeconomics,
+  title={Macroeconomics},
+  author={Blanchard, O.J. and Johnson, D.R.},
+  isbn={9780133780581},
+  lccn={2016001144},
+  url={https://books.google.fr/books?id=qfDmjgEACAAJ},
+  year={2017},
+  publisher={Pearson}
+}
