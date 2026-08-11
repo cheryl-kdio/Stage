@@ -1,0 +1,15 @@
+09:10:18.000000 [Info] Initialisation
+
+09:10:19.000000 [Comment] Inside Heartbeat
+09:10:20.000000 [Comment] Div_pair_ratio = 1.25
+09:10:21.000000 [ [Python] instr1.getsymbol()='EURUSD' instr1.PrevClosePrice()=1.0845 instr1.ContractSize()=100000 yld=2.75
+09:10:22.000000 [ [Python] instr1.getsymbol()='AAPL' instr1.PrevClosePrice()=225.42 instr1.ContractSize()=100 yld=-1.25
+
+09:15:00.000000 [Comment] Inside Heartbeat
+09:15:01.000000 [Comment] Div_pair_ratio = 0.875
+09:15:02.000000 [ [Python] instr1.getsymbol()='US10Y' instr1.PrevClosePrice()=98.25 instr1.ContractSize()=1000 yld=4.376
+09:15:03.000000 [ [Python] instr1.getsymbol()='BTCUSD' instr1.PrevClosePrice()=59120.50 instr1.ContractSize()=1 yld=0.75
+
+09:20:00.000000 [Comment] Inside Heartbeat
+09:20:01.000000 [Comment] Div_pair_ratio = -1.5e-2
+09:20:02.000000 [ [Python] instr1.getsymbol()='GBPUSD' instr1.PrevClosePrice()=1.2745 instr1.ContractSize()=100000 yld=3.10
